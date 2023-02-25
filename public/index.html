@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Заказ доставки в интернет-магазине</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Заказ доставки в интернет-магазине" />
+    <link rel="preload" href="./fonts/Montserrat-Regular.woff2" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./fonts/Montserrat-Medium.woff2" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./fonts/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./fonts/Montserrat-Bold.woff2" as="font" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="./js/2gisfull.js"></script>
+    <script id="map2gis" type="text/javascript">
+      let map;      
+      DG.then(function () {
+          map = DG.map("map", {
+              center: [59.848325, 30.256839],
+              zoom: 11
+          });
+          // DG.marker([59.848325, 30.256839]).addTo(map); // установит начальный маркер по кординатам. это можно не включать
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>    
+  </body>
+</html>
