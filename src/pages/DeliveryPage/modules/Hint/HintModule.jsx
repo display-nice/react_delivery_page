@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Hint extends React.Component {
+export class Hint extends React.Component {
 	constructor(props) {
 		super(props);
 		this.hintPointerRef = React.createRef();
