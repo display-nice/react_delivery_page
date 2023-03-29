@@ -5,9 +5,9 @@
 		 "example/*": ["example/src/*"],
 		 "@library/*": ["library/src/*"],
 		 "@components/*": ["src/components/*"],
-		 "@styles/*": ["src/assets/styles/*"],
-		 "@fonts/*": ["src/assets/fonts/*"],
-		 "@img/*": ["src/assets/img/*"],
+		 "@css/*": ["src/visuals/css/*"],
+		 "@fonts/*": ["src/visuals/fonts/*"],
+		 "@img/*": ["src/visuals/img/*"],
 		 "@utils/*": ["src/utils/*"],
 		 "@services/*": ["src/services/*"]
 	  }

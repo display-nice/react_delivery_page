@@ -15,16 +15,17 @@ const DeliveryModule = () => {
 						id="delivery-led"
 						type="radio"
 						name="city"
-						value="led"
-						checked
+						defaultValue="led"
+						defaultChecked
+						readOnly
 					/>
-					<label for="delivery-led">Санкт-Петербург</label>
-					<input id="delivery-mow" type="radio" name="city" value="mow" />
-					<label for="delivery-mow">Москва</label>
-					<input id="delivery-goj" type="radio" name="city" value="goj" />
-					<label for="delivery-goj">Нижний Новгород</label>
-					<input id="delivery-krr" type="radio" name="city" value="krr" />
-					<label for="delivery-krr">Краснодар</label>
+					<label htmlFor="delivery-led">Санкт-Петербург</label>
+					<input id="delivery-mow" type="radio" name="city" defaultValue="mow" readOnly/>
+					<label htmlFor="delivery-mow">Москва</label>
+					<input id="delivery-goj" type="radio" name="city" defaultValue="goj" readOnly/>
+					<label htmlFor="delivery-goj">Нижний Новгород</label>
+					<input id="delivery-krr" type="radio" name="city" defaultValue="krr" readOnly/>
+					<label htmlFor="delivery-krr">Краснодар</label>
 				</div>
 				<div
 					id="delivery-address-field"
@@ -37,7 +38,7 @@ const DeliveryModule = () => {
 						title="Всплывающая подсказка"
 						required
 					/>
-					<label for="delivery-address" aria-label="Укажите адрес"></label>
+					<label htmlFor="delivery-address" aria-label="Укажите адрес"></label>
 					<div className="input-wrapper__error">Укажите адрес</div>
 				</div>
 				<div
@@ -48,11 +49,12 @@ const DeliveryModule = () => {
 					<input
 						id="delivery-user-date-delivery"
 						type="date"
-						value=""
+						defaultValue=""
+						onChange={console.log()}
 						required
 					/>
 					<label
-						for="delivery-user-date-delivery"
+						htmlFor="delivery-user-date-delivery"
 						aria-label="Укажите дату доставки"
 					></label>
 					<div className="input-wrapper__error">
@@ -69,14 +71,14 @@ const DeliveryModule = () => {
 						data-field-type="delivery"
 					/>
 					<label
-						for="delivery-user-time-delivery"
+						htmlFor="delivery-user-time-delivery"
 						aria-label="Укажите время доставки"
 					></label>
 					<div className="range-slider">
 						<div className="range-slider-thumb-area js_range-slider-thumb-area">
 							<div
 								className="range-slider-thumb js_range-slider-thumb"
-								tabindex="2"
+								tabIndex="2"
 							>
 								<div className="range-slider-tooltip">10:00 - 12:00</div>
 								<div className="range-slider-thumb__stripe"></div>
@@ -99,17 +101,19 @@ const DeliveryModule = () => {
 							id="delivery-payment-card"
 							type="radio"
 							name="delivery-payment-method"
-							value="card"
-							checked
+							defaultValue="card"
+							defaultChecked
+							readOnly
 						/>
-						<label for="delivery-payment-card">Карта</label>
+						<label htmlFor="delivery-payment-card">Карта</label>
 						<input
 							id="delivery-payment-cash"
 							type="radio"
 							name="delivery-payment-method"
-							value="cash"
+							defaultValue="cash"
+							readOnly
 						/>
-						<label for="delivery-payment-cash">Наличные</label>
+						<label htmlFor="delivery-payment-cash">Наличные</label>
 					</div>
 				</div>
 				<div
@@ -119,22 +123,22 @@ const DeliveryModule = () => {
 					<h4>Номер карты</h4>
 					<input id="deliver-crd-1" type="text" required />
 					<label
-						for="deliver-crd-1"
+						htmlFor="deliver-crd-1"
 						aria-label="Первые четыре цифр с карты"
 					></label>
 					<input id="deliver-crd-2" type="text" required />
 					<label
-						for="deliver-crd-2"
+						htmlFor="deliver-crd-2"
 						aria-label="Вторые четыре цифр с карты"
 					></label>
 					<input id="deliver-crd-3" type="text" required />
 					<label
-						for="deliver-crd-3"
+						htmlFor="deliver-crd-3"
 						aria-label="Третьи четыре цифр с карты"
 					></label>
 					<input id="deliver-crd-4" type="text" required />
 					<label
-						for="deliver-crd-4"
+						htmlFor="deliver-crd-4"
 						aria-label="Четвёртые четыре цифр с карты"
 					></label>
 					<div className="input-wrapper__error">Введите верный номер карты</div>
@@ -152,7 +156,7 @@ const DeliveryModule = () => {
 						placeholder="+7(999)999-99-99"
 					/>
 					<label
-						for="phone"
+						htmlFor="phone"
 						aria-label="Введите верный номер телефона, он должен начинаться с +7"
 					></label>
 					<div className="input-wrapper__error">
