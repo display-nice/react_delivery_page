@@ -1,11 +1,21 @@
 import React from "react";
+import { useSelector } from "react-redux";
+// import { Cities } from "@ui/Cities";
 
 const DeliveryModule = () => {
+
+	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
+	let sectionClasses = "form tabs-block__item-delivery";
+	if (selectedTab !== 'delivery') {
+		sectionClasses += " visually-hidden"
+	}
+
 	return (
-		<section className="form tabs-block__item-delivery">
+		<section className={sectionClasses}>
 			<h2 className="visually-hidden">Форма доставки</h2>
 			<form id="deliveryForm" action="#" method="POST">
 				<h3>Доставка</h3>
+				{/* <Cities type="delivery"/> */}
 				<div
 					id="delivery-cities"
 					className="input-wrapper input-wrapper--radio-group"

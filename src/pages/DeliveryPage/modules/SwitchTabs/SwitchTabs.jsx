@@ -1,12 +1,31 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { selectPickupTab } from "./ST_Reducer";
+import { selectDeliveryTab } from "./ST_Reducer";
 
 export const SwitchTabs = () => {
+	const dispatch = useDispatch();
+	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
+	let pickupTabClasses = "tab";
+	let deliveryTabClasses = "tab";
+	switch(selectedTab) {
+		case 'pickup':
+			pickupTabClasses += ' active'
+			break
+		case 'delivery':
+			deliveryTabClasses += ' active'
+			break
+		default: 
+			pickupTabClasses += ' active'
+	}
+
 	return (
 		<React.Fragment>
 			<h2>Выберите способ получения товара</h2>
 
 			<div className="tabs-block__tabs">
-				<div className="tab active" data-tab="pickup" tabIndex="0">
+				<div onClick={() => dispatch(selectPickupTab())} className={pickupTabClasses} data-tab="pickup" tabIndex="0">
 					<span>Самовывоз</span>
 					<svg
 						width="288"
@@ -22,7 +41,7 @@ export const SwitchTabs = () => {
 						/>
 					</svg>
 				</div>
-				<div className="tab" data-tab="delivery" tabIndex="1">
+				<div onClick={() => dispatch(selectDeliveryTab())} className={deliveryTabClasses} data-tab="delivery" tabIndex="1">
 					<span>Доставка курьером</span>
 					<svg
 						width="288"
