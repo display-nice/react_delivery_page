@@ -1,10 +1,41 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Cities } from "@ui/Cities";
-import { Address } from "@ui/Address";
+import { Address } from "./Address";
+
+import { fetchCitiesData } from "@deliveryPage/DeliveryPageServices.js";
+import { PM_test } from "./PM_Reducer";
+import { DP_Services } from "@deliveryPage/DeliveryPageServices.js"
+import { pageIsLoaded } from "@deliveryPage/DeliveryPageReducer";
+import { setCitiesData } from "./PM_Reducer";
 
 export const PickupModule = () => {
+	const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
+	const citiesData = useSelector((state) => state.PM_Reducer.citiesData);
+	const dispatch = useDispatch();
+	
+	if (pageIsLoading) {
+		const DPServices = new DP_Services();
+		DPServices.loadCitiesData()
+			.then( (data) => {
+				dispatch(setCitiesData(data))
+			})
+			.then(dispatch(pageIsLoaded()))
+	}
+
+	function onDataLoaded (citiesData) {
+
+	}
+	// dispatch(fetchCitiesData());
+	// useEffect( () => {		
+		// 	dispatch(fetchCitiesData())
+		// }, [dispatch])
+		
+
+	
+		
+
 
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
 	// console.log('В стейте ST_Reducer выбрана вкладка: ' + selectedTab);
@@ -21,6 +52,7 @@ export const PickupModule = () => {
 				<h3>Самовывоз</h3>
 				<Cities type={"pickup"}/>
 				<Address/>
+				{/* <div onClick={() => dispatch(PM_test())} style={{ width: 100 + "px", height: 50 + "px", backgroundColor: "red" }}>TEST</div> */}
 				<div id="map" style={{ width: 768 + "px", height: 400 + "px" }}></div>
 				<div id="pickup-payment">
 					<h3>Способ оплаты</h3>

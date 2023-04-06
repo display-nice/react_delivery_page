@@ -13,12 +13,12 @@ export const selectDeliveryTab = createAction('SELECT_DELIVERY_TAB');
 export const ST_Reducer = createReducer(initialState, {
 	[selectPickupTab]: function (state) {
 		state.selectedTab = 'pickup';
-		console.log('отработал ST_Reducer');
-		console.log(state.selectedTab);
+		// console.log('отработал ST_Reducer');
+		// console.log(state.selectedTab);
 	},
 	[selectDeliveryTab]: function (state) {
 		state.selectedTab = 'delivery';
-		console.log('отработал ST_Reducer');
-		console.log(state.selectedTab);
+		// console.log('отработал ST_Reducer');
+		// console.log(state.selectedTab);
 	}
 })

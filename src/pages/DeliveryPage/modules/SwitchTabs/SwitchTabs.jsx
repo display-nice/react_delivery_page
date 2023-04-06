@@ -7,8 +7,8 @@ import { selectDeliveryTab } from "./ST_Reducer";
 export const SwitchTabs = () => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	let pickupTabClasses = "tab";
-	let deliveryTabClasses = "tab";
+	let pickupTabClasses = "tab", deliveryTabClasses = "tab";
+	
 	switch(selectedTab) {
 		case 'pickup':
 			pickupTabClasses += ' active'
