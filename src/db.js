@@ -1,4 +1,5 @@
-{
+
+export const db = {
   "cities": [
     {
       "id": 1,

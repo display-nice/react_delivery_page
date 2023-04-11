@@ -1,57 +1,56 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Cities } from "@ui/Cities";
 import { Address } from "./Address";
 
-import { fetchCitiesData } from "@deliveryPage/DeliveryPageServices.js";
-import { PM_test } from "./PM_Reducer";
-import { DP_Services } from "@deliveryPage/DeliveryPageServices.js"
-import { pageIsLoaded } from "@deliveryPage/DeliveryPageReducer";
-import { setCitiesData } from "./PM_Reducer";
+import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
+import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer";
+import { createPickupAddresses } from "./_createPickupAddresses.js";
 
 export const PickupModule = () => {
-	const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
-	const citiesData = useSelector((state) => state.PM_Reducer.citiesData);
+	const pageIsLoading = useSelector((state) => state.PM_Reducer.pageIsLoading);
+	// const pageError = useSelector((state) => state.PM_Reducer.pageError);
 	const dispatch = useDispatch();
+	const cityID = "led";
 	
-	if (pageIsLoading) {
-		const DPServices = new DP_Services();
-		DPServices.loadCitiesData()
-			.then( (data) => {
-				dispatch(setCitiesData(data))
-			})
-			.then(dispatch(pageIsLoaded()))
-	}
+	// let pickupAddresses;
 
-	function onDataLoaded (citiesData) {
+	// if (pageIsLoading) {
+	// 	const DPServices = new DP_Services();
+	// 	DPServices.loadCitiesData()			
+	// 		.then((data) => {
+	// 			dispatch(setCitiesData(data));
+	// 		})
+	// 		.then((data) => {
+	// 			createPickupAddresses(data, cityID)
+	// 		})
+	// 		.then(dispatch(pageIsLoaded()))
+	// }
 
-	}
-	// dispatch(fetchCitiesData());
-	// useEffect( () => {		
-		// 	dispatch(fetchCitiesData())
-		// }, [dispatch])
-		
-
-	
-		
-
-
+	// Управление видимостью модуля Самовывоза
+	// В состоянии записано, какая вкладка должна быть видима
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	// console.log('В стейте ST_Reducer выбрана вкладка: ' + selectedTab);
-
 	let sectionClasses = "form tabs-block__pick-up";
-	if (selectedTab !== 'pickup') {
-		sectionClasses += " visually-hidden"
+	if (selectedTab !== "pickup") {
+		sectionClasses += " visually-hidden";
 	}
+
+	// Отрисовка списка городов после получения данных о городах
+	// const citiesData = useSelector((state) => state.DP_Reducer.citiesData);
+	// const dispatch = useDispatch();
+
+	// function onDataLoaded (citiesData) {
+
+	// }
 
 	return (
 		<section className={sectionClasses}>
 			<h2 className="visually-hidden">Форма самовывоза</h2>
 			<form id="pickupForm" action="#" method="POST">
 				<h3>Самовывоз</h3>
-				<Cities type={"pickup"}/>
-				<Address/>
+				<Cities type={"pickup"} />
+				<Address />
 				{/* <div onClick={() => dispatch(PM_test())} style={{ width: 100 + "px", height: 50 + "px", backgroundColor: "red" }}>TEST</div> */}
 				<div id="map" style={{ width: 768 + "px", height: 400 + "px" }}></div>
 				<div id="pickup-payment">

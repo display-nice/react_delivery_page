@@ -6,14 +6,15 @@ import { ST_Reducer } from "@deliveryPage/modules/SwitchTabs/ST_Reducer";
 
 const initialState = {
 	pageIsLoading: true,
+	pageError: false,
+	citiesData: undefined
 }
 
 export const pageIsLoaded = createAction('PAGE_IS_LOADED');
+export const setCitiesData = createAction('SET_CITIES_DATA');
+
 const DP_Reducer = createReducer(initialState, {
-	[pageIsLoaded]: function(state) {
-		state.pageIsLoading = false;
-		console.log(state.pageIsLoading);
-	}
+	
 })
 
 export const DeliveryPageReducer = combineReducers({
