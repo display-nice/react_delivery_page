@@ -1,15 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer";
-// import { setCitiesData } from "./modules/Pickup/PM_Reducer";
-
-// export const fetchCitiesData = () => {
-// 	return function(dispatch) {
-// 		fetch('https://mock.pages.academy/delivery/db')
-//       .then(response => response.json())
-//       .then(json => dispatch(setCitiesData(json)))
-// 	}
-// };
+import { useDispatch } from "react-redux";
+import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer.js";
 
 export class DP_Services {
 	getResource = async (url) => {
@@ -22,36 +13,28 @@ export class DP_Services {
 	};
 	
 	loadCitiesData = async () => {
-		// console.log('ima loadCitiesData ');
 		const citiesData = await this.getResource(`https://mock.pages.academy/delivery/db`);
-		// console.log(citiesData);
 		return citiesData;
 	}
 	
 	createPickupAddresses = (citiesData, cityID) => {
-		// const citiesData = useSelector((state) => state.DP_Reducer.citiesData);
-		// const citiesIDs = citiesData.cities.map(item => item["city-id"]);
-		// const cityID = "led";
-		// console.log('citiesData в createPickupAddresses: ');
-		// console.log(citiesData);
-		// const citiesData = useSelector((state) => state.PM_Reducer.citiesData)
 		const deliveryPoints = citiesData.cities.find(
 			(item) => item["city-id"] == cityID
 		)["delivery-points"];
 	
-		let inputs = [];
+		let pickupAddresses = [];
 		for (let i = 0; i < deliveryPoints.length; ++i) {
 			const address = deliveryPoints[i].address;
 			const id = `pickup-${cityID}-address-${i + 1}`;
 			const name = `${cityID}-address`;
-			inputs.push(
+			pickupAddresses.push(
 				<React.Fragment key={address + "_key"}>
 					<input id={id} type="radio" name={name} value={address} />
 					<label htmlFor={id}>{address}</label>
 				</React.Fragment>
 			);
 		}
-		return inputs;
+		return pickupAddresses;
 	};
 
 	pageInitialization = async () => {

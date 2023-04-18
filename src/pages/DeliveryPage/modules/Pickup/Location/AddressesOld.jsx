@@ -3,16 +3,18 @@ import { useSelector } from "react-redux";
 
 import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
 
-export const Address = () => {
-	let [addresses, setPA] = useState([]);
+export const AddressesOld = () => {
+	// let [addresses, setPA] = useState([]);
+	let addresses = [];
 	const pageIsLoading = useSelector((state) => state.PM_Reducer.pageIsLoading);
+	const globalCitiesData = useSelector((state) => state.PM_Reducer.citiesData);
 	const DPServices = new DP_Services();
 	
 	if (pageIsLoading) {
 		console.log('pageIsLoading...');
 		(async () => {
 			addresses = await DPServices.pageInitialization();
-			setPA(addresses)
+			// setPA(addresses)
 		})();
 		return (
 			<div></div>
@@ -25,15 +27,16 @@ export const Address = () => {
 	// const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
 	if (!pageIsLoading) {
 		return (
-			<div
-				id="pickupAdresses"
-				className="input-wrapper input-wrapper--radio-group"
-			>
-				<h4>Адрес пункта выдачи заказов</h4>
-				{/* <input id="pick-up-led-address-${i+1}" type="radio" name="led-address" value="${deliveryPoints[i].address}"/>
-				<label htmlFor="pick-up-led-address-${i+1}" >Уинская, 4</label> */}
-				{addresses}
-			</div>
+			<React.Fragment>
+				<div
+					id="pickupAdresses"
+					className="input-wrapper input-wrapper--radio-group"
+				>
+					<h4>Адрес пункта выдачи заказов</h4>					
+					{addresses}
+				</div>
+				
+			</React.Fragment>
 		);
 	}
 

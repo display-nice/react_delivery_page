@@ -11,7 +11,9 @@
 		 "@utils/*": ["src/utils/*"],
 		 "@services/*": ["src/services/*"],
 		 "@ui/*": ["src/ui/*"],
-		 "@deliveryPage/*": ["src/pages/DeliveryPage/*"]
+		 "@deliveryPage/*": ["src/pages/DeliveryPage/*"],
+		 "@pickupModule/*": ["src/pages/DeliveryPage/modules/Pickup/*"],
+		 "@deliveryModule/*": ["src/pages/DeliveryPage/modules/Delivery/*"]
 	  }
 	}
 }

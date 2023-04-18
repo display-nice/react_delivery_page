@@ -1,33 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Cities } from "@ui/Cities";
-import { Address } from "./Address";
-
-import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
-import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer";
-import { createPickupAddresses } from "./_createPickupAddresses.js";
+import { Cities } from "./Location/Cities";
+import { Addresses } from "./Location/AddressesOld";
+import { Location } from "./Location/Location";
 
 export const PickupModule = () => {
-	const pageIsLoading = useSelector((state) => state.PM_Reducer.pageIsLoading);
-	// const pageError = useSelector((state) => state.PM_Reducer.pageError);
-	const dispatch = useDispatch();
-	const cityID = "led";
+	// const dispatch = useDispatch();
 	
-	// let pickupAddresses;
-
-	// if (pageIsLoading) {
-	// 	const DPServices = new DP_Services();
-	// 	DPServices.loadCitiesData()			
-	// 		.then((data) => {
-	// 			dispatch(setCitiesData(data));
-	// 		})
-	// 		.then((data) => {
-	// 			createPickupAddresses(data, cityID)
-	// 		})
-	// 		.then(dispatch(pageIsLoaded()))
-	// }
-
 	// Управление видимостью модуля Самовывоза
 	// В состоянии записано, какая вкладка должна быть видима
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
@@ -40,19 +20,14 @@ export const PickupModule = () => {
 	// const citiesData = useSelector((state) => state.DP_Reducer.citiesData);
 	// const dispatch = useDispatch();
 
-	// function onDataLoaded (citiesData) {
-
-	// }
-
 	return (
 		<section className={sectionClasses}>
 			<h2 className="visually-hidden">Форма самовывоза</h2>
 			<form id="pickupForm" action="#" method="POST">
 				<h3>Самовывоз</h3>
-				<Cities type={"pickup"} />
-				<Address />
-				{/* <div onClick={() => dispatch(PM_test())} style={{ width: 100 + "px", height: 50 + "px", backgroundColor: "red" }}>TEST</div> */}
-				<div id="map" style={{ width: 768 + "px", height: 400 + "px" }}></div>
+				
+				<Location />
+				
 				<div id="pickup-payment">
 					<h3>Способ оплаты</h3>
 					<div className="input-wrapper input-wrapper--radio-group input-wrapper--payment-method">

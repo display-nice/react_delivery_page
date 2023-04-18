@@ -6,8 +6,8 @@ import { PickupModule } from './modules/Pickup/PickupModule';
 import Spinner from '@components/Spinner/Spinner.jsx';
 import { useDispatch, useSelector } from "react-redux";
 
-import { DP_Services } from "@deliveryPage/DeliveryPageServices.js"
-import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer";
+// import { DP_Services } from "@deliveryPage/DeliveryPageServices.js"
+// import { pageIsLoaded, setCitiesData } from "@deliveryPage/DeliveryPageReducer";
 
 const Content = () => {
 	return (
