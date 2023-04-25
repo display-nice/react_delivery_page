@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveCity, setActiveAddress } from "../PM_Reducer";
+import { setActiveCity } from "@deliveryPage/DeliveryPageReducer.js";
 
 export const Cities = () => {	
 	const dispatch = useDispatch();
@@ -11,11 +11,10 @@ export const Cities = () => {
 		dispatch(setActiveCity(e.target.value))
 	}
 	
-	const array = globalCitiesData.cities.map((item) => {
+	const citiesBtns = globalCitiesData.cities.map((item) => {
 		let type = 'pickup';
 		let cityID = item['city-id'];
-		let cityName = item['city'];
-		
+		let cityName = item['city'];		
 		return (
 			<React.Fragment key={cityName + "_key"}>
 				<input
@@ -38,7 +37,7 @@ export const Cities = () => {
 			className="input-wrapper input-wrapper--radio-group"
 		>
 			<h4>Город</h4>
-			{array}
+			 {citiesBtns}
 		</div>
 	);
 };

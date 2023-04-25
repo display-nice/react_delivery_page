@@ -18,12 +18,13 @@ const PM_Slice = createSlice({
 	name: 'PickupModuleReducer',
 	initialState: {
 		activeCity: 'Санкт-Петербург',
-		activeAddress: null
+		activeAddress: null,
+		cityPoints: null,		
 	},
 	reducers: {
 		setActiveCity(state, action) {
 			state.activeCity = action.payload;
-			console.log('установлен активный город: ' + state.activeCity);
+			console.log('установлен активный город: ' + state.activeCity);			
 		},
 		setActiveAddress(state, action) {
 			state.activeAddress = action.payload;

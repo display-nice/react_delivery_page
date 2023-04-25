@@ -1,8 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Cities } from "./Location/Cities";
-import { Addresses } from "./Location/AddressesOld";
 import { Location } from "./Location/Location";
 
 export const PickupModule = () => {

@@ -3,22 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Cities } from "./Cities";
 import { Addresses } from "./Addresses";
-import { Map } from "./Map";
+import { Map } from "./Map/Map";
 import { initializePage } from "@deliveryPage/DeliveryPageReducer.js"
 
-
 export const Location = () => {
-	const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
-	const citiesDataIsLoading = useSelector((state) => state.DP_Reducer.citiesDataIsLoading);
-
 	const dispatch = useDispatch();
+	const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
 
 	// Инициализация страницы
 	useEffect(() => {
 		dispatch(initializePage())
-	}, [])	
+	}, [dispatch])	
 
-	if (citiesDataIsLoading && pageIsLoading) {
+	if (pageIsLoading) {
 		return null;
 	}
 

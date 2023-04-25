@@ -19,36 +19,38 @@ const DP_Slice = createSlice({
 	name: 'DeliveryPageReducer',
 	initialState: {
 		pageIsLoading: true,
-		pageError: false,
-		citiesDataIsLoading: true,
-		citiesData: null		
+		pageError: false,		
+		citiesData: null,
+		activeCity: 'Санкт-Петербург',
+		activeAddress: null
 	},
 	reducers: {
 		pageIsLoaded(state) {
 			state.pageIsLoading = false;
 			console.log('pageIsLoading = ' + state.pageIsLoading + ', страница загрузилась.');
 		},
-		setCitiesData(state, action) {
-			state.citiesData = action.payload;
-			console.log(state.citiesData);
-			console.log('setCitiesData. загрузились данные по городам');
-			state.citiesDataIsLoading = false;
-		}
+		setActiveCity(state, action) {
+			state.activeCity = action.payload;
+			// console.log('установлен активный город: ' + state.activeCity);			
+		},
+		setActiveAddress(state, action) {
+			state.activeAddress = action.payload;
+			// console.log('установлен активный адрес: ' + state.activeAddress);
+		},
 	},
 	extraReducers: {
 		[initializePage.fulfilled]: (state, action) => {
 			state.citiesData = action.payload;
-			console.log(state.citiesData);
-			console.log('initializePage. загрузились данные по городам');
-			state.citiesDataIsLoading = false;
+			// console.log(state.citiesData);
+			// console.log('initializePage. загрузились данные по городам');
 			state.pageIsLoading = false;
-			console.log('initializePage. pageIsLoading = ' + state.pageIsLoading + ', страница загрузилась.');
+			// console.log('initializePage. pageIsLoading = ' + state.pageIsLoading + ', страница загрузилась.');			
 		}
 	}
 })
 
 export const DP_Reducer = DP_Slice.reducer;
-export const { pageIsLoaded, setCitiesData } = DP_Slice.actions;
+export const { pageIsLoaded, setActiveCity, setActiveAddress } = DP_Slice.actions;
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,
