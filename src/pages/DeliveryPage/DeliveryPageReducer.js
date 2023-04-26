@@ -2,8 +2,8 @@ import { createReducer, createAction, combineReducers, createSlice, createAsyncT
 import { useSelector, useDispatch } from "react-redux";
 import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
 
-import { DM_Reducer } from "@deliveryPage/modules/Delivery/DM_Reducer";
-import { PM_Reducer } from "@deliveryPage/modules/Pickup/PM_Reducer";
+// import { DM_Reducer } from "@deliveryPage/modules/Delivery/DM_Reducer";
+// import { PM_Reducer } from "@deliveryPage/modules/Pickup/PM_Reducer";
 import { ST_Reducer } from "@deliveryPage/modules/SwitchTabs/ST_Reducer";
 
 export const initializePage = createAsyncThunk(
@@ -54,7 +54,7 @@ export const { pageIsLoaded, setActiveCity, setActiveAddress } = DP_Slice.action
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,
-	DM_Reducer,
-	PM_Reducer,
+	// DM_Reducer,
+	// PM_Reducer,
 	ST_Reducer
 })
