@@ -146,13 +146,11 @@
 
 .input-wrapper--radio-group input:checked + label {
   color: var(--color-text-white);
-
   background: var(--color-radio-checked);
 }
 
 .input-wrapper--radio-group label:active {
   color: var(--color-text-white);
-
   background: var(--color-radio-checked-hover);
 }
 

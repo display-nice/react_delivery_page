@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveCity } from "@deliveryPage/DeliveryPageReducer.js";
 
-export const Cities = () => {	
+export const Cities = ({type}) => {	
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
 	// const activeCity = useSelector((state) => state.PM_Reducer.activeCity);
@@ -12,7 +12,7 @@ export const Cities = () => {
 	}
 	
 	const citiesBtns = globalCitiesData.cities.map((item) => {
-		let type = 'pickup';
+		
 		let cityID = item['city-id'];
 		let cityName = item['city'];		
 		return (
@@ -33,7 +33,7 @@ export const Cities = () => {
 
 	return (
 		<div
-			id="pickup-cities"
+			id={type + "-cities"}
 			className="input-wrapper input-wrapper--radio-group"
 		>
 			<h4>Город</h4>
