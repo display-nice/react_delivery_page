@@ -61,7 +61,7 @@ const Content = () => {
 								<h2 className="visually-hidden">Форма доставки</h2>
 								<form id="deliveryForm" action="#" method="POST">
 									{/* <h3>Доставка</h3> */}
-									<Cities type={'delivery'}/>
+									{/* <Cities type={'delivery'}/> */}
 									<AddressField />
 									<DateTime />
 									<Payment type={'delivery'}/>
@@ -75,7 +75,7 @@ const Content = () => {
 								<h2 className="visually-hidden">Форма самовывоза</h2>
 								<form id="pickupForm" action="#" method="POST">
 									{/* <h3>Самовывоз</h3> */}
-									<Cities type={'pickup'}/>
+									{/* <Cities type={'pickup'}/> */}
 									{/* <Addresses /> */}
 									{/* <Map /> */}
 									<Payment type={'pickup'}/>

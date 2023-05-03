@@ -24,7 +24,7 @@ const DP_Slice = createSlice({
 		activeCity: 'Санкт-Петербург',
 		activeAddress: null,
 		paymentType: 'card',
-		cardNumber: null,
+		cardNumber: '',
 		phoneNumber: null,
 	},
 	reducers: {
@@ -42,6 +42,10 @@ const DP_Slice = createSlice({
 		},
 		setPaymentType(state, action) {
 			state.paymentType = action.payload;
+		},
+		setCardNumber(state, action) {
+			state.cardNumber = action.payload;
+			// console.log('state.cardNumber = ' + state.cardNumber);
 		}
 	},
 	extraReducers: {
@@ -56,7 +60,7 @@ const DP_Slice = createSlice({
 })
 
 export const DP_Reducer = DP_Slice.reducer;
-export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType } = DP_Slice.actions;
+export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType, setCardNumber } = DP_Slice.actions;
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,
