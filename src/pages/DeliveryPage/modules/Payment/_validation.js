@@ -1,7 +1,3 @@
-export function validateCardNumber(cardNumber) {
-
-}
-
 export function luhnAlgorythm(value) {
 	if (!value) {
 		return false;

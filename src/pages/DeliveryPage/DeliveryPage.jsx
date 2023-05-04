@@ -65,7 +65,7 @@ const Content = () => {
 									<AddressField />
 									<DateTime />
 									<Payment type={'delivery'}/>
-									<PhoneNumber />
+									<PhoneNumber type={'delivery'}/>
 									<CheckAndOrder />
 								</form>
 							</section>
@@ -79,7 +79,7 @@ const Content = () => {
 									{/* <Addresses /> */}
 									{/* <Map /> */}
 									<Payment type={'pickup'}/>
-									<PhoneNumber />
+									<PhoneNumber type={'pickup'}/>
 									<CheckAndOrder />
 								</form>
 							</section>
