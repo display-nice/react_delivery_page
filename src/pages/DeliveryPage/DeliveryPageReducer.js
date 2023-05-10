@@ -26,6 +26,7 @@ const DP_Slice = createSlice({
 		paymentType: 'card',
 		cardNumber: '',
 		phoneNumber: '',
+		deliveryAddress: '',
 	},
 	reducers: {
 		pageIsLoaded(state) {
@@ -50,6 +51,10 @@ const DP_Slice = createSlice({
 		setPhoneNumber(state, action) {
 			state.phoneNumber = action.payload;
 			// console.log('state.phoneNumber = ' + state.phoneNumber);
+		},
+		setDeliveryAddress(state, action) {
+			state.deliveryAddress = action.payload;
+			console.log('state.deliveryAddress = ' + state.deliveryAddress);
 		}
 	},
 	extraReducers: {
@@ -64,7 +69,7 @@ const DP_Slice = createSlice({
 })
 
 export const DP_Reducer = DP_Slice.reducer;
-export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType, setCardNumber, setPhoneNumber } = DP_Slice.actions;
+export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType, setCardNumber, setPhoneNumber, setDeliveryAddress } = DP_Slice.actions;
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,

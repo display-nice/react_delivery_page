@@ -2,7 +2,7 @@ import { createReducer, createAction } from "@reduxjs/toolkit";
 
 // Создание состояния
 const initialState = {
-	selectedTab: 'pickup'
+	selectedTab: 'delivery'
 }
 
 // Создание Экшенов
