@@ -27,6 +27,8 @@ const DP_Slice = createSlice({
 		cardNumber: '',
 		phoneNumber: '',
 		deliveryAddress: '',
+		deliveryDate: '',
+		deliveryTime: '10:00 - 12:00',
 	},
 	reducers: {
 		pageIsLoaded(state) {
@@ -55,7 +57,16 @@ const DP_Slice = createSlice({
 		setDeliveryAddress(state, action) {
 			state.deliveryAddress = action.payload;
 			console.log('state.deliveryAddress = ' + state.deliveryAddress);
-		}
+		},
+		setDeliveryDate(state, action) {
+			state.deliveryDate = action.payload;
+			console.log('state.deliveryDate = ' + state.deliveryDate);
+		},
+		setDeliveryTime(state, action) {
+			state.deliveryTime = action.payload;
+			console.log('state.deliveryTime = ' + state.deliveryTime);
+		},
+
 	},
 	extraReducers: {
 		[initializePage.fulfilled]: (state, action) => {
@@ -69,7 +80,7 @@ const DP_Slice = createSlice({
 })
 
 export const DP_Reducer = DP_Slice.reducer;
-export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType, setCardNumber, setPhoneNumber, setDeliveryAddress } = DP_Slice.actions;
+export const { pageIsLoaded, setActiveCity, setActiveAddress, setPaymentType, setCardNumber, setPhoneNumber, setDeliveryAddress, setDeliveryDate, setDeliveryTime } = DP_Slice.actions;
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,

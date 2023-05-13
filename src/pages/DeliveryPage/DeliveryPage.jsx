@@ -9,7 +9,8 @@ import { SwitchTabs } from "./modules/SwitchTabs/SwitchTabs";
 import { Payment } from "@deliveryPage/modules/Payment/Payment";
 import { PhoneNumber } from "@deliveryPage/modules/PhoneNumber/PhoneNumber";
 import { CheckAndOrder } from "./modules/CheckAndOrder/CheckAndOrder";
-import { DateTime } from "./modules/DateTime/DateTime";
+import { DeliveryDate } from "./modules/DeliveryDate.jsx";
+import { DeliveryTime } from "./modules/DeliveryTime.jsx";
 import { Map } from "./modules/Map/Map";
 import { Cities } from "./modules/Cities";
 import { Addresses } from "./modules/Addresses";
@@ -63,7 +64,8 @@ const Content = () => {
 									<h3>Доставка</h3>
 									{/* <Cities type={'delivery'}/> */}
 									<AddressField />
-									<DateTime />
+									<DeliveryDate/>
+									<DeliveryTime/>
 									{/* <Payment type={'delivery'}/> */}
 									{/* <PhoneNumber type={'delivery'}/> */}
 									{/* <CheckAndOrder /> */}
