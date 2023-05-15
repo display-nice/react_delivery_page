@@ -23,13 +23,11 @@ const Content = () => {
 	switch (selectedTab) {
 		case "pickup":
 			deliverySectionClasses += " visually-hidden";
-			console.log('pickup!');
 			break;
-			case "delivery":
-				pickupSectionClasses += " visually-hidden";
-				console.log('delivery!');
-				break;
-			}			
+		case "delivery":
+			pickupSectionClasses += " visually-hidden";
+			break;
+		}			
 	
 	// Инициализация страницы
 	const dispatch = useDispatch();
@@ -62,13 +60,13 @@ const Content = () => {
 								<h2 className="visually-hidden">Форма доставки</h2>
 								<form id="deliveryForm" action="#" method="POST">
 									<h3>Доставка</h3>
-									{/* <Cities type={'delivery'}/> */}
+									<Cities type={'delivery'}/>
 									<AddressField />
 									<DeliveryDate/>
 									<DeliveryTime/>
-									{/* <Payment type={'delivery'}/> */}
-									{/* <PhoneNumber type={'delivery'}/> */}
-									{/* <CheckAndOrder /> */}
+									<Payment type={'delivery'}/>
+									<PhoneNumber type={'delivery'}/>
+									<CheckAndOrder />
 								</form>
 							</section>
 
@@ -97,7 +95,6 @@ const Content = () => {
 export const DeliveryPage = () => {
 	const pageIsLoading = useSelector((state) => state.DP_Reducer.pageIsLoading);
 	const pageError = useSelector((state) => state.DP_Reducer.pageError);
-
 	const errorMessage = null;
 	const showSpinner = pageIsLoading ? <Spinner /> : null;
 	// const showContent = !(pageIsLoading || pageError) ? <Content /> : null;
@@ -109,8 +106,5 @@ export const DeliveryPage = () => {
 			{/* {showSpinner} */}
 			{showContent}
 		</>
-	);
-	// if (!pageIsLoading) {
-
-	// }
+	);	
 };

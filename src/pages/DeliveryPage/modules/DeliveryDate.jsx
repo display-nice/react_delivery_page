@@ -44,11 +44,11 @@ export const DeliveryDate = () => {
 		x.setHours(0, 0, 0, 0);
 
 		let nowPlusOneDay = new Date();
-		nowPlusOneDay.changeDate(nowPlusOneDay.getDate() + 1);
+		nowPlusOneDay.setDate(nowPlusOneDay.getDate() + 1);
 		nowPlusOneDay.setHours(0, 0, 0, 0);
 
 		let nowPlusSevenDays = new Date();
-		nowPlusSevenDays.changeDate(nowPlusSevenDays.getDate() + 7);
+		nowPlusSevenDays.setDate(nowPlusSevenDays.getDate() + 7);
 		nowPlusSevenDays.setHours(0, 0, 0, 0);
 		
 		if (x >= nowPlusOneDay && x <= nowPlusSevenDays) {
