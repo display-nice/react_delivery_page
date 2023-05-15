@@ -27,7 +27,7 @@ const DP_Slice = createSlice({
 		cardNumber: '',
 		phoneNumber: '',
 		deliveryAddress: '',
-		deliveryDate: '',
+		deliveryDate: '05',
 		deliveryTime: '10:00 - 12:00',
 	},
 	reducers: {
@@ -56,7 +56,7 @@ const DP_Slice = createSlice({
 		},
 		setDeliveryAddress(state, action) {
 			state.deliveryAddress = action.payload;
-			console.log('state.deliveryAddress = ' + state.deliveryAddress);
+			// console.log('state.deliveryAddress = ' + state.deliveryAddress);
 		},
 		setDeliveryDate(state, action) {
 			state.deliveryDate = action.payload;
@@ -64,7 +64,7 @@ const DP_Slice = createSlice({
 		},
 		setDeliveryTime(state, action) {
 			state.deliveryTime = action.payload;
-			console.log('state.deliveryTime = ' + state.deliveryTime);
+			// console.log('state.deliveryTime = ' + state.deliveryTime);
 		},
 
 	},
