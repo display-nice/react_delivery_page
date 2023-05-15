@@ -1,29 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDeliveryDate } from "@deliveryPage/DeliveryPageReducer";
+import { setDeliveryDate, setDeliveryDateError } from "@deliveryPage/DeliveryPageReducer";
 
 export const DeliveryDate = () => {
 	const dispatch = useDispatch();
 	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate);
+	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDateError);
 
-	let dateClasses = "input-wrapper input-wrapper--input";
-	if (validateDate(deliveryDate)) {
-		dateClasses += ' input-wrapper--success'
+	let dateClasses = 'input-wrapper input-wrapper--input';
+	if (deliveryDateError) {
+		dateClasses += " input-wrapper--error";
 	} else {
-		dateClasses += ' input-wrapper--error'
-	}
+		dateClasses += " input-wrapper--success";
+	}	
 
 	function changeDate(e) {
-		dispatch(setDeliveryDate(e.target.value))
+		if(validateDate(e.target.value)) {			
+			dispatch(setDeliveryDate(e.target.value));
+			dispatch(setDeliveryDateError(false));
+		} else {
+			dispatch(setDeliveryDate(e.target.value));
+			dispatch(setDeliveryDateError(true));
+		}
 	}
-	
-	// проверка на корректность формата даты	
 	function validateDate(date) {
-		if (date.match(/^\d{4}[./-]\d{2}[./-]\d{2}$/)) {
-			let nowYear = new Date().getFullYear();
-			let day = +date.slice(8);
-			let month = +date.slice(5, 7);
-			let year = +date.slice(0, 4);
+		// проверка на корректность формата даты
+		if (date.match(/^\d{2}[./-]\d{2}[./-]\d{4}$/)) {
+			const day = +date.slice(0, 2);
+			const month = +date.slice(3, 5);
+			const year = +date.slice(6);
+			const nowYear = new Date().getFullYear();
 			if (
 				day >= 1 &&
 				day <= 31 &&
@@ -31,17 +37,28 @@ export const DeliveryDate = () => {
 				month <= 12 &&
 				(year === nowYear || year === nowYear + 1)
 			) {
-				return dateBusinessCheck(date);
-			} else {
+				// Если формат корректен, то дополнительно проверяем на бизнес-условия
+				const yyyymmdd = `${year}-${month}-${day}`;
+				if (checkBusinessCond(yyyymmdd)) {
+					// Если все проверки успешны, то убираем ошибку
+					return true;
+				}
+				else {					
+					return false;
+				}
+			} 
+			else {
 				return false;
 			}
+		}
+		else {
+			return false;
 		}
 	}
 	// дополнительная проверка на бизнес-условия
 	// Дата должна лежать в диапазоне от +1 до +7 дней от сегодня.
-	function dateBusinessCheck(date) {
-		let x = new Date(date);
-		x.setHours(0, 0, 0, 0);
+	function checkBusinessCond(yyyymmdd) {
+		const userDate = new Date(yyyymmdd);		
 
 		let nowPlusOneDay = new Date();
 		nowPlusOneDay.setDate(nowPlusOneDay.getDate() + 1);
@@ -50,10 +67,10 @@ export const DeliveryDate = () => {
 		let nowPlusSevenDays = new Date();
 		nowPlusSevenDays.setDate(nowPlusSevenDays.getDate() + 7);
 		nowPlusSevenDays.setHours(0, 0, 0, 0);
-		
-		if (x >= nowPlusOneDay && x <= nowPlusSevenDays) {
+
+		if (userDate >= nowPlusOneDay && userDate <= nowPlusSevenDays) {			
 			return true;
-		} else {
+		} else {			
 			return false;
 		}
 	}
@@ -62,7 +79,8 @@ export const DeliveryDate = () => {
 			<h4>Дата доставки</h4>
 			<input
 				id="delivery-user-date-delivery"
-				type="date"
+				type="text"
+				placeholder="дд.мм.гггг"
 				value={deliveryDate}
 				onChange={changeDate}
 				required
@@ -72,8 +90,8 @@ export const DeliveryDate = () => {
 				aria-label="Укажите дату доставки"
 			></label>
 			<div className="input-wrapper__error">
-				Укажите дату доставки (не ранее, чем завтра и не позднее, чем через 7
-				дней)
+				Укажите дату доставки в формате дд.мм.гггг (не ранее, чем завтра и не
+				позднее, чем через 7 дней)
 			</div>
 		</div>
 	);
