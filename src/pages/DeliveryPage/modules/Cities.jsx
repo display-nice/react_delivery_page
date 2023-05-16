@@ -5,7 +5,6 @@ import { setActiveCity } from "@deliveryPage/DeliveryPageReducer.js";
 export const Cities = ({type}) => {	
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
-	// const activeCity = useSelector((state) => state.PM_Reducer.activeCity);
 
 	function changeActiveCity(e) {
 		dispatch(setActiveCity(e.target.value))

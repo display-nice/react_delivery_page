@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeliveryDate, setDeliveryDateError } from "@deliveryPage/DeliveryPageReducer";
 
@@ -7,6 +7,7 @@ export const DeliveryDate = () => {
 	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate);
 	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDateError);
 
+	// Управляет показом ошибки
 	let dateClasses = 'input-wrapper input-wrapper--input';
 	if (deliveryDateError) {
 		dateClasses += " input-wrapper--error";
@@ -14,15 +15,18 @@ export const DeliveryDate = () => {
 		dateClasses += " input-wrapper--success";
 	}	
 
+	// Меняет в стейте дату и состояние ошибки
 	function changeDate(e) {
+		dispatch(setDeliveryDate(e.target.value));
 		if(validateDate(e.target.value)) {			
-			dispatch(setDeliveryDate(e.target.value));
 			dispatch(setDeliveryDateError(false));
-		} else {
-			dispatch(setDeliveryDate(e.target.value));
+		} 
+		else {
 			dispatch(setDeliveryDateError(true));
 		}
 	}
+
+	// Запускает валидацию даты
 	function validateDate(date) {
 		// проверка на корректность формата даты
 		if (date.match(/^\d{2}[./-]\d{2}[./-]\d{4}$/)) {
@@ -55,6 +59,7 @@ export const DeliveryDate = () => {
 			return false;
 		}
 	}
+
 	// дополнительная проверка на бизнес-условия
 	// Дата должна лежать в диапазоне от +1 до +7 дней от сегодня.
 	function checkBusinessCond(yyyymmdd) {
@@ -74,6 +79,7 @@ export const DeliveryDate = () => {
 			return false;
 		}
 	}
+	
 	return (
 		<div id="delivery-date-field" className={dateClasses}>
 			<h4>Дата доставки</h4>

@@ -1,61 +1,76 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setPaymentType,
 	setCardNumber,
+	setCardNumberError
 } from "@deliveryPage/DeliveryPageReducer";
 import { luhnAlgorythm } from "./_validation";
 
 export const Payment = ({ type }) => {
 	const dispatch = useDispatch();
 	const paymentType = useSelector((state) => state.DP_Reducer.paymentType);
-	const cardNumber = useSelector((state) => state.DP_Reducer.cardNumber);
+	const stateCardNumber = useSelector((state) => state.DP_Reducer.cardNumber);
+	const cardNumberError = useSelector((state) => state.DP_Reducer.cardNumberError);
 	// Рефы на поля с номером карты. f1 - field 1, f2 - field 2 и т.д.
 	const f1 = useRef();
 	const f2 = useRef();
 	const f3 = useRef();
 	const f4 = useRef();
 
-	// Вспомогат. ф-я по выбору конкретного поля (рефа)
-	function selectField(field) {
-		switch (field) {
-			case "f1":
-				return f1;
-			case "f2":
-				return f2;
-			case "f3":
-				return f3;
-			case "f4":
-				return f4;
-		}
-	}
 	// Скрывает номер карты при нажатии кнопки "Наличные"
 	let visibility;
-	if (paymentType === "cash") visibility = { display: "none" };
-
-	// Проверка номера карты, внутри запускает валидацию с алгоритмом Луна
-	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
-	if (cardNumber.length < 16) {
-		cardNumberDivClasses += "input-wrapper--error";
-	} else {
-		if (!luhnAlgorythm(cardNumber)) {
-			cardNumberDivClasses += "input-wrapper--error";
-		}
-		if (luhnAlgorythm(cardNumber)) {
-			cardNumberDivClasses += "input-wrapper--success";
-		}
+	if (paymentType === "cash") {
+		visibility = { display: "none" };		
 	}
 
+	// Управляет показом ошибки
+	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
+	if (cardNumberError) {
+		cardNumberDivClasses += "input-wrapper--error";
+	} else {
+		cardNumberDivClasses += "input-wrapper--success";
+	}
+
+	// Меняет в стейте номер карты и состояние ошибки
+	function changeCardNumber(cardNumber) {
+		dispatch(setCardNumber(cardNumber));
+		if (validation(cardNumber)) {
+			dispatch(setCardNumberError(false))
+		}
+		else {
+			dispatch(setCardNumberError(true))
+		}
+	}
+	
+	// Запускает валидацию номера карты
+	function validation(cardNumber) {
+		if (cardNumber.length === 16) {
+			if (!luhnAlgorythm(cardNumber)) {
+				return false
+			}
+			if (luhnAlgorythm(cardNumber)) {
+				return true
+			}			
+		} 
+		else return false
+	}
+	
 	// Меняет тип оплаты, "Карта" или "Наличные"
 	function changePaymentType(e) {
 		dispatch(setPaymentType(e.target.value));
+		if (e.target.value === 'cash') {
+			dispatch(setCardNumberError(false));
+		}
+		if (e.target.value === 'card') {
+			changeCardNumber(stateCardNumber);
+		}
 	}
-
+	
 	// При заполнении текущего поля номера карты ставит фокус на следующее
 	function moveForward(e) {
-		dispatch(setCardNumber(getCardNumber()));
-		if (e.target.value.length == 4) {
-			// goToNextField(e.target.name);
+		changeCardNumber(getCardNumber());
+		if (e.target.value.length === 4) {
 			const currentField = e.target.name;
 			let k = +currentField.slice(1);
 			let i = +currentField.slice(1) + 1;
@@ -70,10 +85,9 @@ export const Payment = ({ type }) => {
 	// При стирании символов в текущем поле номера карты клавишей Backspace
 	// ставит фокус на предыдущее поле
 	function moveBackOnBackspace(e) {
-		if (e.code == "Backspace") {
-			dispatch(setCardNumber(getCardNumber()));
-			if (e.target.value.length == 0) {
-				// goToPrevField(e.target.name);
+		if (e.code === "Backspace") {
+			changeCardNumber(getCardNumber());
+			if (e.target.value.length === 0) {
 				const currentField = e.target.name;
 				let k = +currentField.slice(1);
 				let i = +currentField.slice(1) - 1;
@@ -95,15 +109,30 @@ export const Payment = ({ type }) => {
 	
 	// Берёт единый номер карты из стейта и вставляет его в четыре поля номера карты
 	function pasteCardNumber(field) {
+		// eslint-disable-next-line
 		switch (field) {
 			case "f1":
-				return cardNumber.slice(0, 4);
+				return stateCardNumber.slice(0, 4);
 			case "f2":
-				return cardNumber.slice(4, 8);
+				return stateCardNumber.slice(4, 8);
 			case "f3":
-				return cardNumber.slice(8, 12);
+				return stateCardNumber.slice(8, 12);
 			case "f4":
-				return cardNumber.slice(12, 16);
+				return stateCardNumber.slice(12, 16);				
+		}
+	}
+	// Вспомогат. ф-я по выбору конкретного поля (рефа)
+	function selectField(field) {
+		// eslint-disable-next-line
+		switch (field) {
+			case "f1":
+				return f1;
+			case "f2":
+				return f2;
+			case "f3":
+				return f3;
+			case "f4":
+				return f4;
 		}
 	}
 

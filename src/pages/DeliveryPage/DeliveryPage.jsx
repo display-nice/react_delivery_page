@@ -8,7 +8,7 @@ import { initializePage } from "@deliveryPage/DeliveryPageReducer.js"
 import { SwitchTabs } from "./modules/SwitchTabs/SwitchTabs";
 import { Payment } from "@deliveryPage/modules/Payment/Payment";
 import { PhoneNumber } from "@deliveryPage/modules/PhoneNumber/PhoneNumber";
-import { CheckAndOrder } from "./modules/CheckAndOrder/CheckAndOrder";
+import { CheckAndOrder } from "./modules/CheckAndOrder";
 import { DeliveryDate } from "./modules/DeliveryDate.jsx";
 import { DeliveryTime } from "./modules/DeliveryTime.jsx";
 import { Map } from "./modules/Map/Map";

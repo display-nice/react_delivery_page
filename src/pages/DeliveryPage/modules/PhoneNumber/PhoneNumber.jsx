@@ -1,16 +1,33 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPhoneNumber } from "@deliveryPage/DeliveryPageReducer";
+import { setPhoneNumber, setPhoneError } from "@deliveryPage/DeliveryPageReducer";
 
 export const PhoneNumber = ({ type }) => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
 	const phoneNumber = useSelector((state) => state.DP_Reducer.phoneNumber);
-	const phoneField = useRef();
+	const phoneError = useSelector((state) => state.DP_Reducer.phoneError);	
 
-	// Пишет номер телефона в стейт
+	let phoneClasses = "input-wrapper input-wrapper--input ";
+	if (phoneError) {
+		phoneClasses += "input-wrapper--error";
+	} else {
+		phoneClasses += "input-wrapper--success";
+	}
+		
+	// Проверяет валидность ном. тел. и пишет в стейт ошибку\успех
 	function changePhoneNumber(e) {
+		// Подставляет "+7" в ном. тел. при вводе
+		if (e.target.value.length === 1) {
+			e.target.value = '+7'
+		}
 		dispatch(setPhoneNumber(e.target.value));
+		const validity = e.target.value.match(/\+\d{11}\b/);
+		if (validity) {
+			dispatch(setPhoneError(false));
+		} else {
+			dispatch(setPhoneError(true));
+		}
 	}
 
 	// Меняет текст подсказки в зависимости от выбранной вкладки Самовывоз \ Доставка
@@ -20,21 +37,7 @@ export const PhoneNumber = ({ type }) => {
 			"Товар на складе будет привязан к номеру телефона. В пункте выдачи назовите номер телефона, чтобы получить ваш заказ.";
 	} else if (selectedTab === "delivery") {
 		text = "Курьер позвонит на указанный номер за час до доставки заказа.";
-	}
-
-	// Проверяет валидность ном. тел. и выводит ошибку\успех
-	let phoneClasses = "input-wrapper input-wrapper--input ";
-	const result = phoneNumber.match(/\+\d{11}\b/);
-	if (result) {
-		phoneClasses += "input-wrapper--success";
-	} else {
-		phoneClasses += "input-wrapper--error";
-	}
-	
-	// Подставляет "+7" в ном. тел. при вводе
-	if (phoneNumber.length === 1) {
-		phoneField.current.value = '+7'
-	}
+	}	
 
 	return (
 		<>
@@ -45,8 +48,7 @@ export const PhoneNumber = ({ type }) => {
 					name="phone"
 					type="text"
 					placeholder="+7 (999) 999-99-99"
-					defaultValue={phoneNumber}
-					ref={phoneField}
+					value={phoneNumber}
 					onChange={changePhoneNumber}
 				/>
 				<label
