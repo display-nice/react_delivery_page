@@ -2,16 +2,15 @@ import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setPaymentType,
-	setCardNumber,
-	setCardNumberError
+	setCard
 } from "@deliveryPage/DeliveryPageReducer";
 import { luhnAlgorythm } from "./_validation";
 
 export const Payment = ({ type }) => {
 	const dispatch = useDispatch();
 	const paymentType = useSelector((state) => state.DP_Reducer.paymentType);
-	const stateCardNumber = useSelector((state) => state.DP_Reducer.cardNumber);
-	const cardNumberError = useSelector((state) => state.DP_Reducer.cardNumberError);
+	const stateCardNumber = useSelector((state) => state.DP_Reducer.card.number);
+	const cardError = useSelector((state) => state.DP_Reducer.card.error);
 	// Рефы на поля с номером карты. f1 - field 1, f2 - field 2 и т.д.
 	const f1 = useRef();
 	const f2 = useRef();
@@ -26,20 +25,22 @@ export const Payment = ({ type }) => {
 
 	// Управляет показом ошибки
 	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
-	if (cardNumberError) {
+	if (cardError) {
 		cardNumberDivClasses += "input-wrapper--error";
 	} else {
 		cardNumberDivClasses += "input-wrapper--success";
 	}
-
+	
 	// Меняет в стейте номер карты и состояние ошибки
 	function changeCardNumber(cardNumber) {
-		dispatch(setCardNumber(cardNumber));
+		dispatch(setCard({number: cardNumber}));
 		if (validation(cardNumber)) {
-			dispatch(setCardNumberError(false))
+			// console.log('Валидация успешна');
+			dispatch(setCard({error: false}))
 		}
 		else {
-			dispatch(setCardNumberError(true))
+			// console.log('Валидация не прошла');
+			dispatch(setCard({error: true}))
 		}
 	}
 	
@@ -60,7 +61,7 @@ export const Payment = ({ type }) => {
 	function changePaymentType(e) {
 		dispatch(setPaymentType(e.target.value));
 		if (e.target.value === 'cash') {
-			dispatch(setCardNumberError(false));
+			dispatch(setCard({error: false}));
 		}
 		if (e.target.value === 'card') {
 			changeCardNumber(stateCardNumber);
@@ -95,7 +96,7 @@ export const Payment = ({ type }) => {
 					let prevFieldName = currentField.replace(k, i);
 					let prevField = selectField(prevFieldName);
 					prevField.current.focus();
-				}
+				}				
 			}
 		}
 	}

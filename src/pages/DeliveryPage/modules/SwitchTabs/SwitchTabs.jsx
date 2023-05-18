@@ -4,14 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectPickupTab } from "./ST_Reducer";
 import { selectDeliveryTab } from "./ST_Reducer";
 
+// import { setDeliveryAddressError, setDeliveryDateError } from "@deliveryPage/DeliveryPageReducer";
+
 export const SwitchTabs = () => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	let pickupTabClasses = "tab", deliveryTabClasses = "tab";
+	// const deliveryAddressError = useSelector((state) => state.DP_Reducer.deliveryAddressError);
+	// const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDateError);
 	
+	let pickupTabClasses = "tab", deliveryTabClasses = "tab";
 	switch(selectedTab) {
 		case 'pickup':
-			pickupTabClasses += ' active'
+			pickupTabClasses += ' active';
+			// dispatch(setDeliveryAddressError(false));
+			// dispatch(setDeliveryDateError(false));
 			break
 		case 'delivery':
 			deliveryTabClasses += ' active'

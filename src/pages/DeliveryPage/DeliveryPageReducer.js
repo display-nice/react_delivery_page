@@ -23,12 +23,16 @@ const DP_Slice = createSlice({
 	initialState: {
 		pageIsLoading: true,
 		pageError: false,
+		orderBtnActive: false,
 		citiesData: null,
 		activeCity: "Санкт-Петербург",
 		activeAddress: null,
 		paymentType: "card",
-		cardNumber: "",
-		cardNumberError: true,
+		card: {
+			fieldName: 'номер карты',
+			number: '',
+			error: true
+		},
 		phoneNumber: "",
 		phoneError: true,
 		deliveryAddress: "",
@@ -55,13 +59,27 @@ const DP_Slice = createSlice({
 		setPaymentType(state, action) {
 			state.paymentType = action.payload;
 		},
+		setCard(state, action) {
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('number')) {
+				state.card.number = action.payload.number;
+				// console.log('state.card.number: ' + state.card.number);
+			}			
+			if (incoming.includes('error')) {
+				state.card.error = action.payload.error;
+				// console.log('state.card.error: ' + state.card.error);
+			}
+		},
 		setCardNumber(state, action) {
-			state.cardNumber = action.payload;
-			// console.log('state.cardNumber = ' + state.cardNumber);
+			state.card.number = action.payload;
+			console.log('state.card.number: ');
+			console.log(state.card.number);
 		},
 		setCardNumberError(state, action) {
-			state.cardNumberError = action.payload;
-			console.log('state.cardNumberError = ' + state.cardNumberError);
+			state.card.error = action.payload;
+			// console.log('state.cardNumberError = ' + state.cardNumberError);
+			console.log('state.card.error: ');
+			console.log(state.card.error);
 		},
 		setPhoneNumber(state, action) {
 			state.phoneNumber = action.payload;
@@ -109,6 +127,7 @@ export const {
 	setActiveCity,
 	setActiveAddress,
 	setPaymentType,
+	setCard,
 	setCardNumber,
 	setCardNumberError,
 	setPhoneNumber,
