@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDeliveryAddress, setDeliveryAddressError } from "@deliveryPage/DeliveryPageReducer";
+import { setDelAddress } from "@deliveryPage/DeliveryPageReducer";
 
-export const AddressField = () => {
+export const DelAddress = () => {
 	const dispatch = useDispatch();
-	const deliveryAddress = useSelector((state) => state.DP_Reducer.deliveryAddress);
-	const deliveryAddressError = useSelector((state) => state.DP_Reducer.deliveryAddressError)
+	const deliveryAddress = useSelector((state) => state.DP_Reducer.deliveryAddress.address);
+	const dAddressError = useSelector((state) => state.DP_Reducer.deliveryAddress.error)
 
 	let addressClasses = "input-wrapper input-wrapper--input";
-	if (deliveryAddressError) {
+	if (dAddressError) {
 		addressClasses += " input-wrapper--error"
 	} else {
 		addressClasses += " input-wrapper--success"
@@ -16,13 +16,13 @@ export const AddressField = () => {
 	
 	// Отправка изменений в стейт
 	function changeDeliveryAddress(e) {
-		dispatch(setDeliveryAddress(e.target.value))
+		dispatch(setDelAddress({address: e.target.value}))
 		// Простая проверка поля на заполненность, согласно ТЗ
 		const validity = e.target.value.length > 0
 		if (validity) {
-			dispatch(setDeliveryAddressError(false))
+			dispatch(setDelAddress({error: false}))
 		} else {
-			dispatch(setDeliveryAddressError(true))
+			dispatch(setDelAddress({error: true}))
 		}
 	}
 

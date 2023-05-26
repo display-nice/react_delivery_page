@@ -9,7 +9,7 @@ import {
 	Tooltip,
 } from "react-leaflet";
 import { GetDeliveryPoints } from "@deliveryPage/DeliveryPageServices.js";
-import { setActiveAddress } from "@deliveryPage/DeliveryPageReducer.js";
+import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
 // Размеры зума, вспомогательные константы
 const zoomToCity = 10;
@@ -39,7 +39,7 @@ function MyMapComponent() {
 	const dispatch = useDispatch();
 	const map = useMap();
 	const activeCity = useSelector((state) => state.DP_Reducer.activeCity);
-	const activeAddress = useSelector((state) => state.DP_Reducer.activeAddress);
+	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.address);
 	const deliveryPoints = GetDeliveryPoints();
 
 	// При изменении активного города показывает этот город
@@ -72,7 +72,7 @@ function MyMapComponent() {
 						// При клике на маркер передвигает карту к адресу и устанавливает адрес в стейт
 						click: () => {
 							map.flyTo(point.coordinates, zoomToMarker);
-							dispatch(setActiveAddress(point.address));
+							dispatch(setPickupAddress({address: point.address}));
 						},
 					}}
 				>

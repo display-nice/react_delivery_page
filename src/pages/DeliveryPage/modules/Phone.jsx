@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPhoneNumber, setPhoneError } from "@deliveryPage/DeliveryPageReducer";
+import { setPhone } from "@deliveryPage/DeliveryPageReducer";
 
-export const PhoneNumber = ({ type }) => {
+export const Phone = ({ type }) => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	const phoneNumber = useSelector((state) => state.DP_Reducer.phoneNumber);
-	const phoneError = useSelector((state) => state.DP_Reducer.phoneError);	
+	const phoneNumber = useSelector((state) => state.DP_Reducer.phone.number);
+	const phoneError = useSelector((state) => state.DP_Reducer.phone.error);
 
 	let phoneClasses = "input-wrapper input-wrapper--input ";
 	if (phoneError) {
@@ -21,12 +21,13 @@ export const PhoneNumber = ({ type }) => {
 		if (e.target.value.length === 1) {
 			e.target.value = '+7'
 		}
-		dispatch(setPhoneNumber(e.target.value));
+		dispatch(setPhone({number: e.target.value}));
+		// Простая валидация на + и 11 цифр
 		const validity = e.target.value.match(/\+\d{11}\b/);
 		if (validity) {
-			dispatch(setPhoneError(false));
+			dispatch(setPhone({error: false}));
 		} else {
-			dispatch(setPhoneError(true));
+			dispatch(setPhone({error: true}));
 		}
 	}
 

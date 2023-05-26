@@ -1,17 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveAddress } from "@deliveryPage/DeliveryPageReducer.js";
+import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
-export const Addresses = () => {
+export const PickupAddress = () => {
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
 	const activeCity = useSelector((state) => state.DP_Reducer.activeCity);
-	const activeAddress = useSelector((state) => state.DP_Reducer.activeAddress);
+	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.address);
 	
 	// Меняет активный адрес по клику на кнопку адреса
 	function changeActiveAddress(e) {
-		dispatch(setActiveAddress(e.target.value))
-	}	
+		dispatch(setPickupAddress({address: e.target.value, error: false}))
+	}
 	
 	// Рисует кнопки адресов доставки для каждого города
 	// Срабатывает при изменении активного города в стейте

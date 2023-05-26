@@ -3,53 +3,65 @@ import { useSelector } from "react-redux";
 
 export const CheckAndOrder = () => {
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	const cardNumberError = useSelector(
-		(state) => state.DP_Reducer.cardNumberError
+	const card = useSelector((state) => state.DP_Reducer.card);
+	const phone = useSelector((state) => state.DP_Reducer.phone);
+	const deliveryAddress = useSelector(
+		(state) => state.DP_Reducer.deliveryAddress
 	);
-	const phoneError = useSelector((state) => state.DP_Reducer.phoneError);
-	const deliveryAddressError = useSelector(
-		(state) => state.DP_Reducer.deliveryAddressError
-	);
-	const deliveryDateError = useSelector(
-		(state) => state.DP_Reducer.deliveryDateError
-	);
-	const activeAddress = useSelector((state) => state.DP_Reducer.activeAddress);
+	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate);
+	const pickupAddress = useSelector((state) => state.DP_Reducer.pickupAddress);
 
 	let orderBtnDisabled;
 	let isLeftToFill;
-	let necessaryFields = [];
+	let unfilled = [];
+	let message = [];
 
+	function lookForUnfilled(array) {
+		array.forEach((item) => {
+			if (item.error) unfilled.push(item.fieldName);
+		});
+	}
 	// eslint-disable-next-line
 	switch (selectedTab) {
 		case "pickup":
-			if (cardNumberError || phoneError || !activeAddress) {
-				orderBtnDisabled = true;
-				let array = [cardNumberError, phoneError, Boolean(!activeAddress)]
-				// necessaryFields = array.map((item) => {
-				// 	if (item === true)
-				// 	return item
-				// })
-				for (let i = 0; i <= array.length; i++) {
-					if (array[i]) {
-						necessaryFields.push(array[i])
-					}
-				}
-				// console.log(array);
-				// console.log('necessaryFields = ' + necessaryFields);
-				// console.log('necessaryFieldsLength = ' + necessaryFields.length);
-			}
-			else orderBtnDisabled = false;
+			lookForUnfilled([card, phone, pickupAddress]);
 			break;
 		case "delivery":
-			if (
-				cardNumberError ||
-				phoneError ||
-				deliveryAddressError ||
-				deliveryDateError
-			)
-				orderBtnDisabled = true;
-			else orderBtnDisabled = false;
+			lookForUnfilled([card, phone, deliveryAddress, deliveryDate]);
 			break;
+	}
+
+	if (unfilled.length === 0) orderBtnDisabled = false;
+	else orderBtnDisabled = true;
+
+	if (unfilled.length > 1) {
+		let symbol;
+		for (let i = 0; i < unfilled.length; ++i) {
+			// Если перебирается предпоследний элемент, то ставим "и"
+			if (i === unfilled.length - 2) {
+				symbol = <span> и </span>;
+			}
+			// Если перебирается последний элемент, то ничего не ставим
+			else if (i === unfilled.length - 1) {
+				symbol = null;
+			}
+			// Для остальных элементов ставим запятую
+			else {
+				symbol = <span>, </span>;
+			}
+			message.push(
+				<React.Fragment key={unfilled[i] + "_key"}>
+					<span className={"form__submit-islefttofill"}>{unfilled[i]}</span>
+					{symbol}
+				</React.Fragment>
+			);
+		}
+	} else if (unfilled.length === 1) {
+		message.push(
+			<span key={unfilled[0] + "_key"} className={"form__submit-islefttofill"}>
+				{unfilled[0]}
+			</span>
+		);
 	}
 
 	if (orderBtnDisabled) {
@@ -67,9 +79,9 @@ export const CheckAndOrder = () => {
 			</button>
 			<div className="form__submit-state">
 				{isLeftToFill}
-				<p id="pick-hint" className="form__submit-help"></p>
-				{necessaryFields}
-				{/* <span>номер карты</span> и <span>телефон</span> */}
+				<p id="pick-hint" className="form__submit-help">
+					{message}
+				</p>
 			</div>
 		</div>
 	);

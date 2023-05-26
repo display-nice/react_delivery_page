@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDeliveryDate, setDeliveryDateError } from "@deliveryPage/DeliveryPageReducer";
+import { setDeliveryDate } from "@deliveryPage/DeliveryPageReducer";
 
 export const DeliveryDate = () => {
 	const dispatch = useDispatch();
-	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate);
-	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDateError);
+	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate.date);
+	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDate.error);
 
 	// Управляет показом ошибки
 	let dateClasses = 'input-wrapper input-wrapper--input';
@@ -17,12 +17,12 @@ export const DeliveryDate = () => {
 
 	// Меняет в стейте дату и состояние ошибки
 	function changeDate(e) {
-		dispatch(setDeliveryDate(e.target.value));
+		dispatch(setDeliveryDate({date: e.target.value}));
 		if(validateDate(e.target.value)) {			
-			dispatch(setDeliveryDateError(false));
+			dispatch(setDeliveryDate({error: false}));
 		} 
 		else {
-			dispatch(setDeliveryDateError(true));
+			dispatch(setDeliveryDate({error: true}));
 		}
 	}
 

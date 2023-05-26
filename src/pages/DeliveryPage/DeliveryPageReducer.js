@@ -26,19 +26,32 @@ const DP_Slice = createSlice({
 		orderBtnActive: false,
 		citiesData: null,
 		activeCity: "Санкт-Петербург",
-		activeAddress: null,
+		pickupAddress: {
+			fieldName: 'адрес пункта выдачи заказов',
+			address: null,
+			error: true
+		},
 		paymentType: "card",
 		card: {
 			fieldName: 'номер карты',
 			number: '',
 			error: true
 		},
-		phoneNumber: "",
-		phoneError: true,
-		deliveryAddress: "",
-		deliveryAddressError: true,
-		deliveryDate: "",
-		deliveryDateError: true,
+		phone: {
+			fieldName: 'номер телефона',
+			number: '',
+			error: true
+		},		
+		deliveryAddress: {
+			fieldName: 'адрес доставки',
+			address: '',
+			error: true
+		},
+		deliveryDate: {
+			fieldName: 'дата доставки',
+			date: '',
+			error: true
+		},
 		deliveryTime: "10:00 - 12:00",
 	},
 	reducers: {
@@ -52,9 +65,17 @@ const DP_Slice = createSlice({
 			state.activeCity = action.payload;
 			// console.log('установлен активный город: ' + state.activeCity);
 		},
-		setActiveAddress(state, action) {
-			state.activeAddress = action.payload;
-			// console.log('установлен активный адрес: ' + state.activeAddress);
+		setPickupAddress(state, action) {
+			// state.pickupAddress = action.payload;
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('address')) {
+				state.pickupAddress.address = action.payload.address;
+				// console.log('state.pickupAddress.number: ' + state.pickupAddress.number);
+			}			
+			if (incoming.includes('error')) {
+				state.pickupAddress.error = action.payload.error;
+				// console.log('state.pickupAddress.error: ' + state.pickupAddress.error);
+			}
 		},
 		setPaymentType(state, action) {
 			state.paymentType = action.payload;
@@ -70,40 +91,34 @@ const DP_Slice = createSlice({
 				// console.log('state.card.error: ' + state.card.error);
 			}
 		},
-		setCardNumber(state, action) {
-			state.card.number = action.payload;
-			console.log('state.card.number: ');
-			console.log(state.card.number);
+		setPhone(state, action) {
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('number')) {
+				state.phone.number = action.payload.number;
+				// console.log('state.phone.number: ' + state.phone.number);
+			}			
+			if (incoming.includes('error')) {
+				state.phone.error = action.payload.error;
+				// console.log('state.phone.error: ' + state.phone.error);
+			}			
 		},
-		setCardNumberError(state, action) {
-			state.card.error = action.payload;
-			// console.log('state.cardNumberError = ' + state.cardNumberError);
-			console.log('state.card.error: ');
-			console.log(state.card.error);
-		},
-		setPhoneNumber(state, action) {
-			state.phoneNumber = action.payload;
-			// console.log('state.phoneNumber = ' + state.phoneNumber);
-		},
-		setPhoneError(state, action) {
-			state.phoneError = action.payload;
-			// console.log('state.phoneError = ' + state.phoneError);
-		},
-		setDeliveryAddress(state, action) {
-			state.deliveryAddress = action.payload;
-			// console.log('state.deliveryAddress = ' + state.deliveryAddress);
-		},
-		setDeliveryAddressError(state, action) {
-			state.deliveryAddressError = action.payload;
-			// console.log('state.deliveryAddressError = ' + state.deliveryAddressError);
+		setDelAddress(state, action) {
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('address')) {
+				state.deliveryAddress.address = action.payload.address;
+			}			
+			if (incoming.includes('error')) {
+				state.deliveryAddress.error = action.payload.error;
+			}
 		},
 		setDeliveryDate(state, action) {
-			state.deliveryDate = action.payload;
-			// console.log("state.deliveryDate = " + state.deliveryDate);
-		},
-		setDeliveryDateError(state, action) {
-			state.deliveryDateError = action.payload;
-			// console.log("state.deliveryDateError = " + state.deliveryDateError);
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('date')) {
+				state.deliveryDate.date = action.payload.date;
+			}			
+			if (incoming.includes('error')) {
+				state.deliveryDate.error = action.payload.error;
+			}
 		},
 		setDeliveryTime(state, action) {
 			state.deliveryTime = action.payload;
@@ -125,17 +140,12 @@ export const DP_Reducer = DP_Slice.reducer;
 export const {
 	pageIsLoaded,
 	setActiveCity,
-	setActiveAddress,
+	setPickupAddress,
 	setPaymentType,
-	setCard,
-	setCardNumber,
-	setCardNumberError,
-	setPhoneNumber,
-	setPhoneError,
-	setDeliveryAddress,
-	setDeliveryAddressError,
+	setCard,	
+	setPhone,
+	setDelAddress,
 	setDeliveryDate,
-	setDeliveryDateError,
 	setDeliveryTime,
 } = DP_Slice.actions;
 

@@ -82,7 +82,7 @@ form h3 {
   margin-top: 5px;
 }
 
-.form__submit-help span {
+.form__submit-islefttofill {
   font-weight: 700;
   color: var(--color-text-red);
 }

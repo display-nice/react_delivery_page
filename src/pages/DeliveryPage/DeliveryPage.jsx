@@ -7,14 +7,14 @@ import { initializePage } from "@deliveryPage/DeliveryPageReducer.js"
 
 import { SwitchTabs } from "./modules/SwitchTabs/SwitchTabs";
 import { Payment } from "@deliveryPage/modules/Payment/Payment";
-import { PhoneNumber } from "@deliveryPage/modules/PhoneNumber/PhoneNumber";
+import { Phone } from "@deliveryPage/modules/Phone";
 import { CheckAndOrder } from "./modules/CheckAndOrder";
 import { DeliveryDate } from "./modules/DeliveryDate.jsx";
 import { DeliveryTime } from "./modules/DeliveryTime.jsx";
 import { Map } from "./modules/Map/Map";
 import { Cities } from "./modules/Cities";
-import { Addresses } from "./modules/Addresses";
-import { AddressField } from "./modules/AddressField"; 
+import { PickupAddress } from "./modules/PickupAddress";
+import { DelAddress } from "./modules/DelAddress"; 
 
 const Content = () => {
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
@@ -61,11 +61,11 @@ const Content = () => {
 								<form id="deliveryForm" action="#" method="POST">
 									<h3>Доставка</h3>
 									<Cities type={'delivery'}/>
-									<AddressField />
+									<DelAddress />
 									<DeliveryDate/>
 									<DeliveryTime/>
 									<Payment type={'delivery'}/>
-									<PhoneNumber type={'delivery'}/>
+									<Phone type={'delivery'}/>
 									<CheckAndOrder />
 								</form>
 							</section>
@@ -76,10 +76,10 @@ const Content = () => {
 								<form id="pickupForm" action="#" method="POST">
 									<h3>Самовывоз</h3>
 									<Cities type={'pickup'}/>
-									<Addresses />
+									<PickupAddress />
 									<Map />
 									<Payment type={'pickup'}/>
-									<PhoneNumber type={'pickup'}/>
+									<Phone type={'pickup'}/>
 									<CheckAndOrder />
 								</form>
 							</section>
