@@ -8,9 +8,10 @@ import { luhnAlgorythm } from "./_validation";
 
 export const Payment = ({ type }) => {
 	const dispatch = useDispatch();
-	const paymentType = useSelector((state) => state.DP_Reducer.paymentType);
-	const stateCardNumber = useSelector((state) => state.DP_Reducer.card.number);
+	const paymentType = useSelector((state) => state.DP_Reducer.paymentType.value);
+	const stateCardNumber = useSelector((state) => state.DP_Reducer.card.value);
 	const cardError = useSelector((state) => state.DP_Reducer.card.error);
+	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
 	// Рефы на поля с номером карты. f1 - field 1, f2 - field 2 и т.д.
 	const f1 = useRef();
 	const f2 = useRef();
@@ -25,15 +26,17 @@ export const Payment = ({ type }) => {
 
 	// Управляет показом ошибки
 	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
-	if (cardError) {
-		cardNumberDivClasses += "input-wrapper--error";
-	} else {
-		cardNumberDivClasses += "input-wrapper--success";
+	if(!orderSent) {
+		if (cardError) {
+			cardNumberDivClasses += "input-wrapper--error";
+		} else {
+			cardNumberDivClasses += "input-wrapper--success";
+		}
 	}
 	
 	// Меняет в стейте номер карты и состояние ошибки
 	function changeCardNumber(cardNumber) {
-		dispatch(setCard({number: cardNumber}));
+		dispatch(setCard({value: cardNumber}));
 		if (validation(cardNumber)) {
 			// console.log('Валидация успешна');
 			dispatch(setCard({error: false}))
@@ -59,7 +62,7 @@ export const Payment = ({ type }) => {
 	
 	// Меняет тип оплаты, "Карта" или "Наличные"
 	function changePaymentType(e) {
-		dispatch(setPaymentType(e.target.value));
+		dispatch(setPaymentType({value: e.target.value}));
 		if (e.target.value === 'cash') {
 			dispatch(setCard({error: false}));
 		}
@@ -148,7 +151,7 @@ export const Payment = ({ type }) => {
 						type="radio"
 						name={type + "-payment-method"}
 						defaultValue="card"
-						defaultChecked
+						checked={paymentType === 'card' ? true : false}
 						readOnly
 					/>
 					<label htmlFor={type + "-payment-card"}>Карта</label>
@@ -158,6 +161,7 @@ export const Payment = ({ type }) => {
 						type="radio"
 						name={type + "-payment-method"}
 						defaultValue="cash"
+						checked={paymentType === 'cash' ? true : false}
 						readOnly
 					/>
 					<label htmlFor={type + "-payment-cash"}>Наличные</label>

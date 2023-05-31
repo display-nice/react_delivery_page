@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeliveryTime } from "@deliveryPage/DeliveryPageReducer";
 
 export const DeliveryTime = () => {
 	const dispatch = useDispatch();
-	const deliveryTime = useSelector((state) => state.DP_Reducer.deliveryTime);
+	const deliveryTime = useSelector(
+		(state) => state.DP_Reducer.deliveryTime.value
+	);
 	const thumb = useRef();
 	const area = useRef();
 	// Номер шага
@@ -12,7 +14,13 @@ export const DeliveryTime = () => {
 	// в часе три шага, в диапазоне времени доставки семь часов. 3*7=21.
 	let step = 0;
 
-	function moveThumb(e) {
+	// Однократно навешиваем ф-ю движения ползунка с клавиатуры
+	useEffect(() => {
+		document.addEventListener("keydown", keyboardMoveThumb);
+	}, []);	
+
+	// Функция движения ползунка по зажатию левой кнопки мыши
+	function mouseMoveThumb(e) {
 		thumb.current.ondragstart = function () {
 			return false;
 		};
@@ -24,20 +32,16 @@ export const DeliveryTime = () => {
 		document.onmousemove = function (e) {
 			// формула считает новое левое положение бегунка
 			const newLeft = e.pageX - leftEdge - shiftX;
+
 			// если новое положение бегунка преодолело барьер шага,
 			// значит номер шага надо изменить на новый
 			if (Math.floor(newLeft / stepPx) !== step) {
 				// определяем номер шага от 1 до 21
 				step = Math.floor(newLeft / stepPx);
-				
+
 				// Если номер шага в диапазоне от 0 до 21, то делаем всё, что надо
 				if (step >= 0 && step <= 21) {
-					// Двигаем ползунок
-					thumb.current.style.left = step * stepPx + "px";
-					// Получаем время
-					let time = getTime();
-					// Пишем время в стейт
-					dispatch(setDeliveryTime(time));
+					makeThumbActions();
 
 					// При поднятии кнопки мыши убираем обработчики
 					document.onmouseup = function () {
@@ -54,6 +58,38 @@ export const DeliveryTime = () => {
 			}
 		};
 	}
+
+	// Функция движения ползунка по нажатию стрелок вправо\влево
+	function keyboardMoveThumb(e) {
+		if (e.shiftKey && e.code == "ArrowRight") {
+			step += 1;
+			if (step > 21) {
+				step = 21;
+			}
+			makeThumbActions();
+		}
+		if (e.shiftKey && e.code == "ArrowLeft") {
+			step -= 1;
+			if (step < 0) {
+				step = 0;
+			}
+			makeThumbActions();
+		}
+	}
+
+	// Вспомогательная функция для движения ползунка
+	function makeThumbActions() {
+		// Получаем время шага (в пикселях)
+		let stepPx = Math.round(area.current.offsetWidth / 21);
+		// Двигаем ползунок
+		thumb.current.style.left = step * stepPx + "px";
+		// Получаем время
+		let time = getTime();
+		// Пишем время в стейт
+		dispatch(setDeliveryTime({ value: time }));
+	}
+
+	// Вспомогательная функция получения времени по бизнес-условиям
 	function getTime() {
 		// Вспомогательные массивы с номерами шагов, соотв. 20 и 40 минутам.
 		const arr20mins = [1, 4, 7, 10, 13, 16, 19];
@@ -74,7 +110,7 @@ export const DeliveryTime = () => {
 			10 + hours + ":" + minutes + " - " + (12 + hours) + ":" + minutes;
 		// двигаем бегунок на цену одного шага в пикселях
 		return time;
-	}
+	}	
 
 	return (
 		<div id="delivery-time" className="input-wrapper input-wrapper--range">
@@ -98,7 +134,7 @@ export const DeliveryTime = () => {
 						className="range-slider-thumb js_range-slider-thumb"
 						tabIndex="2"
 						ref={thumb}
-						onMouseDown={moveThumb}
+						onMouseDown={mouseMoveThumb}
 					>
 						<div className="range-slider-tooltip">{deliveryTime}</div>
 						<div className="range-slider-thumb__stripe"></div>

@@ -1,23 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectPickupTab } from "./ST_Reducer";
 import { selectDeliveryTab } from "./ST_Reducer";
 
-// import { setDeliveryAddressError, setDeliveryDateError } from "@deliveryPage/DeliveryPageReducer";
-
 export const SwitchTabs = () => {
 	const dispatch = useDispatch();
-	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	// const deliveryAddressError = useSelector((state) => state.DP_Reducer.deliveryAddressError);
-	// const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDateError);
+	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab.value);
 	
 	let pickupTabClasses = "tab", deliveryTabClasses = "tab";
 	switch(selectedTab) {
 		case 'pickup':
 			pickupTabClasses += ' active';
-			// dispatch(setDeliveryAddressError(false));
-			// dispatch(setDeliveryDateError(false));
 			break
 		case 'delivery':
 			deliveryTabClasses += ' active'
@@ -26,10 +20,27 @@ export const SwitchTabs = () => {
 			pickupTabClasses += ' active'
 	}
 
+	useEffect(() => {
+		document.addEventListener('keydown', switchTabsOnTab)
+	})
+	const switchTabsOnTab = (e) => {
+		if (e.key === "Tab") {
+			e.preventDefault();
+			// eslint-disable-next-line
+			switch(selectedTab) {
+				case 'pickup':
+					dispatch(selectDeliveryTab());
+					break
+				case 'delivery':
+					dispatch(selectPickupTab());
+					break				
+			}
+		}
+	}
+
 	return (
 		<React.Fragment>
 			<h2>Выберите способ получения товара</h2>
-
 			<div className="tabs-block__tabs">
 				<div onClick={() => dispatch(selectPickupTab())} className={pickupTabClasses} data-tab="pickup" tabIndex="0">
 					<span>Самовывоз</span>

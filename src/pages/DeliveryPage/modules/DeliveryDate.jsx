@@ -4,20 +4,23 @@ import { setDeliveryDate } from "@deliveryPage/DeliveryPageReducer";
 
 export const DeliveryDate = () => {
 	const dispatch = useDispatch();
-	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate.date);
+	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate.value);
 	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDate.error);
+	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
 
 	// Управляет показом ошибки
 	let dateClasses = 'input-wrapper input-wrapper--input';
-	if (deliveryDateError) {
-		dateClasses += " input-wrapper--error";
-	} else {
-		dateClasses += " input-wrapper--success";
-	}	
+	if(!orderSent) {
+		if (deliveryDateError) {
+			dateClasses += " input-wrapper--error";
+		} else {
+			dateClasses += " input-wrapper--success";
+		}
+	}
 
 	// Меняет в стейте дату и состояние ошибки
 	function changeDate(e) {
-		dispatch(setDeliveryDate({date: e.target.value}));
+		dispatch(setDeliveryDate({value: e.target.value}));
 		if(validateDate(e.target.value)) {			
 			dispatch(setDeliveryDate({error: false}));
 		} 

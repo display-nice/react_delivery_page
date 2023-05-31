@@ -17,7 +17,7 @@ import { PickupAddress } from "./modules/PickupAddress";
 import { DelAddress } from "./modules/DelAddress"; 
 
 const Content = () => {
-	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
+	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab.value);
 	let pickupSectionClasses,
 	deliverySectionClasses = "form tabs-block__pick-up";	
 	switch (selectedTab) {
@@ -39,8 +39,7 @@ const Content = () => {
 
 	if (pageIsLoading) {
 		return null;
-	}
-	
+	}	
 
 	return (
 		<>

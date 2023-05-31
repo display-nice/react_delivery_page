@@ -3,12 +3,13 @@ import {
 	createSlice,
 	createAsyncThunk,
 } from "@reduxjs/toolkit";
-import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
 
-// import { DM_Reducer } from "@deliveryPage/modules/Delivery/DM_Reducer";
-// import { PM_Reducer } from "@deliveryPage/modules/Pickup/PM_Reducer";
+import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
 import { ST_Reducer } from "@deliveryPage/modules/SwitchTabs/ST_Reducer";
 
+// Инициализация страницы: подгрузка данных о городах и точках доставки
+// установка их в стейт через extraReducers
+// Вызывается в компоненте DeliveryPage.jsx
 export const initializePage = createAsyncThunk(
 	"DeliveryPageReducer/initializePage",
 	async function () {
@@ -18,41 +19,64 @@ export const initializePage = createAsyncThunk(
 	}
 );
 
+// Отправка итоговых данных формы на сервер
+// Вызывается в компоненте CheckAndOrder.jsx
+export const sendData = createAsyncThunk(
+	"DeliveryPageReducer/sendFormData",
+	async function(data) {
+		const DPServices = new DP_Services();
+		await DPServices.sendFormData(data);
+	}
+)
+
 const DP_Slice = createSlice({
 	name: "DeliveryPageReducer",
 	initialState: {
 		pageIsLoading: true,
 		pageError: false,
 		orderBtnActive: false,
+		orderSent: false,
 		citiesData: null,
-		activeCity: "Санкт-Петербург",
-		pickupAddress: {
-			fieldName: 'адрес пункта выдачи заказов',
-			address: null,
-			error: true
+		city: {
+			fieldName: 'город',
+			value: "Санкт-Петербург",
+			error: false
 		},
-		paymentType: "card",
+		paymentType: {
+			fieldName: 'способ оплаты',
+			value: "card",
+			error: false
+		},
 		card: {
 			fieldName: 'номер карты',
-			number: '',
+			value: '',
 			error: true
 		},
 		phone: {
 			fieldName: 'номер телефона',
-			number: '',
+			value: '',
 			error: true
 		},		
+		pickupAddress: {
+			fieldName: 'адрес пункта выдачи заказов',
+			value: null,
+			error: true
+		},
 		deliveryAddress: {
 			fieldName: 'адрес доставки',
-			address: '',
+			value: '',
 			error: true
 		},
 		deliveryDate: {
 			fieldName: 'дата доставки',
-			date: '',
+			value: '',
 			error: true
 		},
-		deliveryTime: "10:00 - 12:00",
+		deliveryTime: {
+			fieldName: 'время доставки',
+			value: "10:00 - 12:00",
+			error: false
+		}
 	},
 	reducers: {
 		pageIsLoaded(state) {
@@ -61,15 +85,25 @@ const DP_Slice = createSlice({
 				"pageIsLoading = " + state.pageIsLoading + ", страница загрузилась."
 			);
 		},
-		setActiveCity(state, action) {
-			state.activeCity = action.payload;
-			// console.log('установлен активный город: ' + state.activeCity);
+		setOrderSent(state, action) {
+			state.orderSent = action.payload
+		},
+		setCity(state, action) {
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('value')) {
+				state.city.value = action.payload.value;
+				console.log('state.city.value: ' + state.city.value);
+			}			
+			if (incoming.includes('error')) {
+				state.city.error = action.payload.error;
+				console.log('state.city.error: ' + state.city.error);
+			}
 		},
 		setPickupAddress(state, action) {
 			// state.pickupAddress = action.payload;
 			const incoming = Object.keys(action.payload);
-			if (incoming.includes('address')) {
-				state.pickupAddress.address = action.payload.address;
+			if (incoming.includes('value')) {
+				state.pickupAddress.value = action.payload.value;
 				// console.log('state.pickupAddress.number: ' + state.pickupAddress.number);
 			}			
 			if (incoming.includes('error')) {
@@ -78,12 +112,18 @@ const DP_Slice = createSlice({
 			}
 		},
 		setPaymentType(state, action) {
-			state.paymentType = action.payload;
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('value')) {
+				state.paymentType.value = action.payload.value;				
+			}
+			if (incoming.includes('error')) {
+				state.paymentType.error = action.payload.error;
+			}
 		},
 		setCard(state, action) {
 			const incoming = Object.keys(action.payload);
-			if (incoming.includes('number')) {
-				state.card.number = action.payload.number;
+			if (incoming.includes('value')) {
+				state.card.value = action.payload.value;
 				// console.log('state.card.number: ' + state.card.number);
 			}			
 			if (incoming.includes('error')) {
@@ -93,8 +133,8 @@ const DP_Slice = createSlice({
 		},
 		setPhone(state, action) {
 			const incoming = Object.keys(action.payload);
-			if (incoming.includes('number')) {
-				state.phone.number = action.payload.number;
+			if (incoming.includes('value')) {
+				state.phone.value = action.payload.value;
 				// console.log('state.phone.number: ' + state.phone.number);
 			}			
 			if (incoming.includes('error')) {
@@ -104,8 +144,8 @@ const DP_Slice = createSlice({
 		},
 		setDelAddress(state, action) {
 			const incoming = Object.keys(action.payload);
-			if (incoming.includes('address')) {
-				state.deliveryAddress.address = action.payload.address;
+			if (incoming.includes('value')) {
+				state.deliveryAddress.value = action.payload.value;
 			}			
 			if (incoming.includes('error')) {
 				state.deliveryAddress.error = action.payload.error;
@@ -113,25 +153,77 @@ const DP_Slice = createSlice({
 		},
 		setDeliveryDate(state, action) {
 			const incoming = Object.keys(action.payload);
-			if (incoming.includes('date')) {
-				state.deliveryDate.date = action.payload.date;
+			if (incoming.includes('value')) {
+				state.deliveryDate.value = action.payload.value;
 			}			
 			if (incoming.includes('error')) {
 				state.deliveryDate.error = action.payload.error;
 			}
 		},
 		setDeliveryTime(state, action) {
-			state.deliveryTime = action.payload;
-			// console.log('state.deliveryTime = ' + state.deliveryTime);
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('value')) {
+				state.deliveryTime.value = action.payload.value;
+				console.log('state.deliveryTime.value = ' + state.deliveryTime.value);
+			}			
+			if (incoming.includes('error')) {
+				state.deliveryTime.error = action.payload.error;
+			}
 		},
 	},
 	extraReducers: {
 		[initializePage.fulfilled]: (state, action) => {
 			state.citiesData = action.payload;
-			// console.log(state.citiesData);
-			// console.log('initializePage. загрузились данные по городам');
 			state.pageIsLoading = false;
-			// console.log('initializePage. pageIsLoading = ' + state.pageIsLoading + ', страница загрузилась.');
+		},
+		[sendData.pending]: (state) => {
+			
+		},
+		[sendData.rejected]: (state) => {
+
+		},
+		[sendData.fulfilled]: (state) => {
+			state.orderSent = true;
+			state.city = {
+				fieldName: 'город',
+				value: "Санкт-Петербург",
+				error: false
+			};
+			state.paymentType = {
+				fieldName: 'способ оплаты',
+				value: "card",
+				error: false
+			};
+			state.card = {
+				fieldName: 'номер карты',
+				value: '',
+				error: true
+			};
+			state.phone = {
+				fieldName: 'номер телефона',
+				value: '',
+				error: true
+			};
+			state.pickupAddress = {
+				fieldName: 'адрес пункта выдачи заказов',
+				value: null,
+				error: true
+			};
+			state.deliveryAddress = {
+				fieldName: 'адрес доставки',
+				value: '',
+				error: true
+			};
+			state.deliveryDate = {
+				fieldName: 'дата доставки',
+				value: '',
+				error: true
+			};
+			state.deliveryTime = {
+				fieldName: 'время доставки',
+				value: "10:00 - 12:00",
+				error: false
+			};
 		},
 	},
 });
@@ -139,7 +231,8 @@ const DP_Slice = createSlice({
 export const DP_Reducer = DP_Slice.reducer;
 export const {
 	pageIsLoaded,
-	setActiveCity,
+	setOrderSent,
+	setCity,
 	setPickupAddress,
 	setPaymentType,
 	setCard,	
@@ -151,7 +244,5 @@ export const {
 
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,
-	// DM_Reducer,
-	// PM_Reducer,
 	ST_Reducer,
 });

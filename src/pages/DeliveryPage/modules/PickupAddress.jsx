@@ -5,12 +5,12 @@ import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 export const PickupAddress = () => {
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
-	const activeCity = useSelector((state) => state.DP_Reducer.activeCity);
-	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.address);
+	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
+	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.value);
 	
 	// Меняет активный адрес по клику на кнопку адреса
 	function changeActiveAddress(e) {
-		dispatch(setPickupAddress({address: e.target.value, error: false}))
+		dispatch(setPickupAddress({value: e.target.value, error: false}))
 	}
 	
 	// Рисует кнопки адресов доставки для каждого города

@@ -1,13 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveCity } from "@deliveryPage/DeliveryPageReducer.js";
+import { setCity } from "@deliveryPage/DeliveryPageReducer.js";
 
 export const Cities = ({type}) => {	
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
+	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
 
 	function changeActiveCity(e) {
-		dispatch(setActiveCity(e.target.value))
+		dispatch(setCity({value: e.target.value}))
 	}
 	
 	const citiesBtns = globalCitiesData.cities.map((item) => {
@@ -22,7 +23,7 @@ export const Cities = ({type}) => {
 					type="radio"
 					name="city"
 					defaultValue={cityName}
-					defaultChecked={cityName === 'Санкт-Петербург' ? true : false}
+					checked={cityName === activeCity ? true : false}
 					readOnly
 				/>
 				<label htmlFor={type + "-" + cityID}>{cityName}</label>

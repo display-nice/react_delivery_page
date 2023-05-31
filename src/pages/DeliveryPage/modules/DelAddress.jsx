@@ -4,19 +4,22 @@ import { setDelAddress } from "@deliveryPage/DeliveryPageReducer";
 
 export const DelAddress = () => {
 	const dispatch = useDispatch();
-	const deliveryAddress = useSelector((state) => state.DP_Reducer.deliveryAddress.address);
-	const dAddressError = useSelector((state) => state.DP_Reducer.deliveryAddress.error)
+	const deliveryAddress = useSelector((state) => state.DP_Reducer.deliveryAddress.value);
+	const dAddressError = useSelector((state) => state.DP_Reducer.deliveryAddress.error);
+	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
 
 	let addressClasses = "input-wrapper input-wrapper--input";
-	if (dAddressError) {
-		addressClasses += " input-wrapper--error"
-	} else {
-		addressClasses += " input-wrapper--success"
+	if (!orderSent) {
+		if (dAddressError) {
+			addressClasses += " input-wrapper--error"
+		} else {
+			addressClasses += " input-wrapper--success"
+		}
 	}
 	
 	// Отправка изменений в стейт
 	function changeDeliveryAddress(e) {
-		dispatch(setDelAddress({address: e.target.value}))
+		dispatch(setDelAddress({value: e.target.value}))
 		// Простая проверка поля на заполненность, согласно ТЗ
 		const validity = e.target.value.length > 0
 		if (validity) {

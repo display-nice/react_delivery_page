@@ -4,30 +4,35 @@ import { setPhone } from "@deliveryPage/DeliveryPageReducer";
 
 export const Phone = ({ type }) => {
 	const dispatch = useDispatch();
-	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
-	const phoneNumber = useSelector((state) => state.DP_Reducer.phone.number);
+	const selectedTab = useSelector(
+		(state) => state.ST_Reducer.selectedTab.value
+	);
+	const phoneNumber = useSelector((state) => state.DP_Reducer.phone.value);
 	const phoneError = useSelector((state) => state.DP_Reducer.phone.error);
+	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
 
 	let phoneClasses = "input-wrapper input-wrapper--input ";
-	if (phoneError) {
-		phoneClasses += "input-wrapper--error";
-	} else {
-		phoneClasses += "input-wrapper--success";
+	if (!orderSent) {
+		if (phoneError) {
+			phoneClasses += "input-wrapper--error";
+		} else {
+			phoneClasses += "input-wrapper--success";
+		}
 	}
-		
+
 	// Проверяет валидность ном. тел. и пишет в стейт ошибку\успех
 	function changePhoneNumber(e) {
 		// Подставляет "+7" в ном. тел. при вводе
 		if (e.target.value.length === 1) {
-			e.target.value = '+7'
+			e.target.value = "+7";
 		}
-		dispatch(setPhone({number: e.target.value}));
+		dispatch(setPhone({ value: e.target.value }));
 		// Простая валидация на + и 11 цифр
 		const validity = e.target.value.match(/\+\d{11}\b/);
 		if (validity) {
-			dispatch(setPhone({error: false}));
+			dispatch(setPhone({ error: false }));
 		} else {
-			dispatch(setPhone({error: true}));
+			dispatch(setPhone({ error: true }));
 		}
 	}
 
@@ -38,11 +43,11 @@ export const Phone = ({ type }) => {
 			"Товар на складе будет привязан к номеру телефона. В пункте выдачи назовите номер телефона, чтобы получить ваш заказ.";
 	} else if (selectedTab === "delivery") {
 		text = "Курьер позвонит на указанный номер за час до доставки заказа.";
-	}	
+	}
 
 	return (
 		<>
-			<div id={type + "-phone-field"} className={phoneClasses}>				
+			<div id={type + "-phone-field"} className={phoneClasses}>
 				<h4>Номер телефона</h4>
 				<input
 					id="phone"

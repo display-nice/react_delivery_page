@@ -38,8 +38,8 @@ function findCenter(deliveryPoints) {
 function MyMapComponent() {
 	const dispatch = useDispatch();
 	const map = useMap();
-	const activeCity = useSelector((state) => state.DP_Reducer.activeCity);
-	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.address);
+	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
+	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.value);
 	const deliveryPoints = GetDeliveryPoints();
 
 	// При изменении активного города показывает этот город
@@ -72,7 +72,7 @@ function MyMapComponent() {
 						// При клике на маркер передвигает карту к адресу и устанавливает адрес в стейт
 						click: () => {
 							map.flyTo(point.coordinates, zoomToMarker);
-							dispatch(setPickupAddress({address: point.address}));
+							dispatch(setPickupAddress({value: point.address}));
 						},
 					}}
 				>
