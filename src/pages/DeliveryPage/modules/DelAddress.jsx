@@ -6,10 +6,10 @@ export const DelAddress = () => {
 	const dispatch = useDispatch();
 	const deliveryAddress = useSelector((state) => state.DP_Reducer.deliveryAddress.value);
 	const dAddressError = useSelector((state) => state.DP_Reducer.deliveryAddress.error);
-	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
+	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
 	let addressClasses = "input-wrapper input-wrapper--input";
-	if (!orderSent) {
+	if (orderSendingStatus !== 'success') {
 		if (dAddressError) {
 			addressClasses += " input-wrapper--error"
 		} else {

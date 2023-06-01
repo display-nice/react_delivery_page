@@ -2,30 +2,36 @@ import { db as localTestCitiesData } from "../../db";
 import { useSelector } from "react-redux";
 
 export class DP_Services {
-	getResource = async (url) => {
-		const res = await fetch(url);
-		if (!res.ok) {
-			throw new Error(`Could not fetch ${url}` + `, received ${res.status}`);
-		}
-		return await res.json();
-	};
-
+	
 	loadCitiesData = async () => {
-		const citiesData = await this.getResource(`https://mock.pages.academy/delivery/db`);
-		// const citiesData = localTestCitiesData;
-		return citiesData;
+		const response = await fetch(`https://mock.pages.academy/delivery/db`);
+		if (!response.ok) {
+			throw new Error(`Network or server error, try again later`);
+		}
+		// const response = localTestCitiesData;
+		return await response.json();
 	};
 
 	sendFormData = async (data) => {
-		await fetch("https://mock.pages.academy/delivery/requests", {
-			method: "POST",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-type": "application/json",
-			},
-		})
-			.then((response) => response.json())
+		const response = await fetch(
+			"https://mock.pages.academy/delivery/requests",
+			{
+				method: "POST",
+				body: JSON.stringify(data),
+				headers: {
+					"Content-type": "application/json",
+				},
+			}
+		);
+		if (!response.ok) {
+			throw new Error(`Network or server error, try again later`);
+		}
+		await response
+			.json()
 			.then((json) => console.log("ответ от сервера: ", json));
+
+		// .then((response) => response.json())
+		// .then((json) => console.log("ответ от сервера: ", json));
 	};
 }
 

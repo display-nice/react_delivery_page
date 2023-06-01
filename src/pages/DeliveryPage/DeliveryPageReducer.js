@@ -32,11 +32,12 @@ export const sendData = createAsyncThunk(
 const DP_Slice = createSlice({
 	name: "DeliveryPageReducer",
 	initialState: {
-		pageIsLoading: true,
-		pageError: false,
-		orderBtnActive: false,
-		orderSent: false,
+		page: {
+			isLoading: true,
+			error: false
+		},	
 		citiesData: null,
+		orderSendingStatus: '',
 		city: {
 			fieldName: 'город',
 			value: "Санкт-Петербург",
@@ -78,37 +79,35 @@ const DP_Slice = createSlice({
 			error: false
 		}
 	},
-	reducers: {
-		pageIsLoaded(state) {
-			state.pageIsLoading = false;
-			console.log(
-				"pageIsLoading = " + state.pageIsLoading + ", страница загрузилась."
-			);
+	reducers: {		
+		setPage(state, action) {
+			const incoming = Object.keys(action.payload);
+			if (incoming.includes('isLoading')) {
+				state.page.isLoading = action.payload.isLoading;
+			}			
+			if (incoming.includes('error')) {
+				state.page.error = action.payload.error;
+			}
 		},
-		setOrderSent(state, action) {
-			state.orderSent = action.payload
+		setOrderSendingStatus(state, action) {
+			state.orderSendingStatus = action.payload;
 		},
 		setCity(state, action) {
 			const incoming = Object.keys(action.payload);
 			if (incoming.includes('value')) {
 				state.city.value = action.payload.value;
-				console.log('state.city.value: ' + state.city.value);
 			}			
 			if (incoming.includes('error')) {
 				state.city.error = action.payload.error;
-				console.log('state.city.error: ' + state.city.error);
 			}
 		},
 		setPickupAddress(state, action) {
-			// state.pickupAddress = action.payload;
 			const incoming = Object.keys(action.payload);
 			if (incoming.includes('value')) {
 				state.pickupAddress.value = action.payload.value;
-				// console.log('state.pickupAddress.number: ' + state.pickupAddress.number);
 			}			
 			if (incoming.includes('error')) {
 				state.pickupAddress.error = action.payload.error;
-				// console.log('state.pickupAddress.error: ' + state.pickupAddress.error);
 			}
 		},
 		setPaymentType(state, action) {
@@ -124,22 +123,18 @@ const DP_Slice = createSlice({
 			const incoming = Object.keys(action.payload);
 			if (incoming.includes('value')) {
 				state.card.value = action.payload.value;
-				// console.log('state.card.number: ' + state.card.number);
 			}			
 			if (incoming.includes('error')) {
 				state.card.error = action.payload.error;
-				// console.log('state.card.error: ' + state.card.error);
 			}
 		},
 		setPhone(state, action) {
 			const incoming = Object.keys(action.payload);
 			if (incoming.includes('value')) {
 				state.phone.value = action.payload.value;
-				// console.log('state.phone.number: ' + state.phone.number);
 			}			
 			if (incoming.includes('error')) {
 				state.phone.error = action.payload.error;
-				// console.log('state.phone.error: ' + state.phone.error);
 			}			
 		},
 		setDelAddress(state, action) {
@@ -164,26 +159,30 @@ const DP_Slice = createSlice({
 			const incoming = Object.keys(action.payload);
 			if (incoming.includes('value')) {
 				state.deliveryTime.value = action.payload.value;
-				console.log('state.deliveryTime.value = ' + state.deliveryTime.value);
 			}			
 			if (incoming.includes('error')) {
 				state.deliveryTime.error = action.payload.error;
 			}
 		},
 	},
-	extraReducers: {
+	extraReducers: {		
+		[initializePage.error]: (state) => {
+			state.page.error = true;
+			console.log('initializePage.error');
+		},
 		[initializePage.fulfilled]: (state, action) => {
 			state.citiesData = action.payload;
-			state.pageIsLoading = false;
+			state.page.isLoading = false;
+			state.page.error = false;
 		},
 		[sendData.pending]: (state) => {
-			
+			state.orderSendingStatus = 'pending';
 		},
 		[sendData.rejected]: (state) => {
-
+			state.orderSendingStatus = 'error';			
 		},
 		[sendData.fulfilled]: (state) => {
-			state.orderSent = true;
+			state.orderSendingStatus = 'success';
 			state.city = {
 				fieldName: 'город',
 				value: "Санкт-Петербург",
@@ -229,9 +228,9 @@ const DP_Slice = createSlice({
 });
 
 export const DP_Reducer = DP_Slice.reducer;
-export const {
-	pageIsLoaded,
-	setOrderSent,
+export const {	
+	setPage,
+	setOrderSendingStatus,
 	setCity,
 	setPickupAddress,
 	setPaymentType,

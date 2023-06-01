@@ -11,7 +11,7 @@ export const Payment = ({ type }) => {
 	const paymentType = useSelector((state) => state.DP_Reducer.paymentType.value);
 	const stateCardNumber = useSelector((state) => state.DP_Reducer.card.value);
 	const cardError = useSelector((state) => state.DP_Reducer.card.error);
-	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
+	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 	// Рефы на поля с номером карты. f1 - field 1, f2 - field 2 и т.д.
 	const f1 = useRef();
 	const f2 = useRef();
@@ -26,7 +26,7 @@ export const Payment = ({ type }) => {
 
 	// Управляет показом ошибки
 	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
-	if(!orderSent) {
+	if(orderSendingStatus !== 'success') {
 		if (cardError) {
 			cardNumberDivClasses += "input-wrapper--error";
 		} else {

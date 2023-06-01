@@ -6,11 +6,11 @@ export const DeliveryDate = () => {
 	const dispatch = useDispatch();
 	const deliveryDate = useSelector((state) => state.DP_Reducer.deliveryDate.value);
 	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDate.error);
-	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
+	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
 	// Управляет показом ошибки
 	let dateClasses = 'input-wrapper input-wrapper--input';
-	if(!orderSent) {
+	if(orderSendingStatus !== 'success') {
 		if (deliveryDateError) {
 			dateClasses += " input-wrapper--error";
 		} else {

@@ -9,10 +9,10 @@ export const Phone = ({ type }) => {
 	);
 	const phoneNumber = useSelector((state) => state.DP_Reducer.phone.value);
 	const phoneError = useSelector((state) => state.DP_Reducer.phone.error);
-	const orderSent = useSelector((state) => state.DP_Reducer.orderSent);
+	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
 	let phoneClasses = "input-wrapper input-wrapper--input ";
-	if (!orderSent) {
+	if (orderSendingStatus !== 'success') {
 		if (phoneError) {
 			phoneClasses += "input-wrapper--error";
 		} else {
