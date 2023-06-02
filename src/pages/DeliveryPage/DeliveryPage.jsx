@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { initializePage } from "@deliveryPage/DeliveryPageReducer.js";
 
+import { Hint } from "@deliveryPage/modules/Hint/HintModule.jsx";
 import { SwitchTabs } from "./modules/SwitchTabs/SwitchTabs";
 import { Payment } from "@deliveryPage/modules/Payment/Payment";
 import { Phone } from "@deliveryPage/modules/Phone";
@@ -43,8 +44,6 @@ const PageContent = () => {
 	return (
 		<>
 			{/* <Hint /> */}
-			{/* <div className="page-header"></div> */}
-
 			<h1 className="visually-hidden">Заказ доставки в интернет-магазине</h1>
 			<div className="tabs-block">
 				<SwitchTabs />
@@ -105,6 +104,7 @@ export const DeliveryPage = () => {
 
 	return (
 		<>
+			<Hint />
 			<div className="wrapper">
 				<main className="page-main">{content}</main>
 			</div>

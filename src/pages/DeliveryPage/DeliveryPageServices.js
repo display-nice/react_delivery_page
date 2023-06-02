@@ -34,12 +34,3 @@ export class DP_Services {
 		// .then((json) => console.log("ответ от сервера: ", json));
 	};
 }
-
-export function GetDeliveryPoints() {
-	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
-	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
-	const deliveryPoints = globalCitiesData.cities.find(
-		(item) => item["city"] === activeCity
-	)["delivery-points"];
-	return deliveryPoints;
-}

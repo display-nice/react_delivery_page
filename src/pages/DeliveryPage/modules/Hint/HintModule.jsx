@@ -52,13 +52,21 @@ export class Hint extends React.Component {
 							<li className="hint__item">
 								CSS: модульная структура, переменные, БЭМ, Flexbox
 							</li>
-							<li className="hint__item">React, Router, Redux Toolkit</li>
+							<li className="hint__item">React, Redux Toolkit</li>
 							<li className="hint__item">
-								Карта и точки на API 2GIS. Выбранный адрес отображается на карте
+								Внешний стейт. Переиспользуемые компоненты.
+							</li>
+							<li className="hint__item">
+								Карта и точки на API Leaflet со стилем 2GIS. Выбранный адрес
+								отображается на карте
 							</li>
 							<li className="hint__item">
 								Адреса точек в городе приходят с сервера в JSON через
 								Fetch-запрос
+							</li>
+							<li className="hint__item">
+								Обработка ошибок загрузки страницы и ошибок отправки данных на
+								сервер
 							</li>
 							<li className="hint__item">
 								Различные способы валидации: html, регулярные выражения,

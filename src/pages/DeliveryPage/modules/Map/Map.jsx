@@ -8,12 +8,23 @@ import {
 	Marker,
 	Tooltip,
 } from "react-leaflet";
-import { GetDeliveryPoints } from "@deliveryPage/DeliveryPageServices.js";
+// import { GetDeliveryPoints } from "@deliveryPage/DeliveryPageServices.js";
 import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
 // Размеры зума, вспомогательные константы
 const zoomToCity = 10;
 const zoomToMarker = 15;
+
+// Вспомогательный функциональный компонент
+// Получает точки доставки из данных о городах, полученных ранее с сервера
+function GetDeliveryPoints() {
+	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
+	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
+	const deliveryPoints = globalCitiesData.cities.find(
+		(item) => item["city"] === activeCity
+	)["delivery-points"];
+	return deliveryPoints;
+}
 
 // Вспомогательная функция
 // Вычисляет среднее арифметическое координат точек доставки по городу
