@@ -16,6 +16,9 @@ import { Cities } from "./modules/Cities";
 import { PickupAddress } from "./modules/PickupAddress";
 import { DelAddress } from "./modules/DelAddress";
 
+// import "leaflet/dist/images/marker-shadow.png";
+// import "../../visuals/img/leaflet/marker-icon.png"
+
 const PageContent = () => {	
 	const selectedTab = useSelector(
 		(state) => state.ST_Reducer.selectedTab.value

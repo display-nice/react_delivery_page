@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
 import "./leaflet.css";
-
 import {
 	MapContainer,
 	TileLayer,
@@ -11,7 +11,23 @@ import {
 	Tooltip,
 } from "react-leaflet";
 
-import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
+// Этот блок обходит баг с импортом иконок в Лефлете, когда иконки теряются, если они не размещены в корне
+// Здесь происходит подмена путей
+import markerIcon from './images/marker-icon.png';
+import markerIcon2x from './images/marker-icon-2x.png';
+import markerShadow from './images/marker-shadow.png';
+import layers from './images/layers.png';
+import layers2x from './images/layers-2x.png';
+import L from 'leaflet';
+let DefaultIcon = L.icon({
+	iconUrl: markerIcon,
+	markerIcon2xUrl: markerIcon2x,
+	markerShadowUrl: markerShadow,
+	layersUrl: layers,
+	layers2xUrl: layers2x
+});
+L.Marker.prototype.options.icon = DefaultIcon;
+
 
 // Размеры зума, вспомогательные константы
 const zoomToCity = 10;
