@@ -11,6 +11,7 @@ export const Phone = ({ type }) => {
 	const phoneError = useSelector((state) => state.DP_Reducer.phone.error);
 	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
+	// 1. Подсветка ошибки \ успеха при заполнении поля
 	let phoneClasses = "input-wrapper input-wrapper--input ";
 	if (orderSendingStatus !== 'success') {
 		if (phoneError) {
@@ -20,7 +21,17 @@ export const Phone = ({ type }) => {
 		}
 	}
 
-	// Проверяет валидность ном. тел. и пишет в стейт ошибку\успех
+	// 2. Меняет текст подсказки в зависимости от выбранной вкладки Самовывоз \ Доставка
+	let text;
+	if (selectedTab === "pickup") {
+		text =
+			"Товар на складе будет привязан к номеру телефона. В пункте выдачи назовите номер телефона, чтобы получить ваш заказ.";
+	} else if (selectedTab === "delivery") {
+		text = "Курьер позвонит на указанный номер за час до доставки заказа.";
+	}
+
+	// * Срабатывает при изменении текста в инпуте
+	// Меняет в стейте телефон и состояние ошибки, после чего отработает п.1
 	function changePhoneNumber(e) {
 		// Подставляет "+7" в ном. тел. при вводе
 		if (e.target.value.length === 1) {
@@ -34,15 +45,6 @@ export const Phone = ({ type }) => {
 		} else {
 			dispatch(setPhone({ error: true }));
 		}
-	}
-
-	// Меняет текст подсказки в зависимости от выбранной вкладки Самовывоз \ Доставка
-	let text;
-	if (selectedTab === "pickup") {
-		text =
-			"Товар на складе будет привязан к номеру телефона. В пункте выдачи назовите номер телефона, чтобы получить ваш заказ.";
-	} else if (selectedTab === "delivery") {
-		text = "Курьер позвонит на указанный номер за час до доставки заказа.";
 	}
 
 	return (

@@ -1,15 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { sendData, setOrderSendingStatus } from "../DeliveryPageReducer";
+import { sendData } from "../DeliveryPageReducer";
 
 export const CheckAndOrder = () => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab);
 	const orderSendingStatus = useSelector(
 		(state) => state.DP_Reducer.orderSendingStatus
-	);
-	// const orderBtnDisabled = useSelector((state) => state.DP_Reducer.orderSending.orderBtnDisabled);
+	);	
 	const city = useSelector((state) => state.DP_Reducer.city);
 	const pickupAddress = useSelector((state) => state.DP_Reducer.pickupAddress);
 	const paymentType = useSelector((state) => state.DP_Reducer.paymentType);
@@ -24,9 +23,10 @@ export const CheckAndOrder = () => {
 	let orderBtnDisabled;
 	let unfilled = [];
 	let redFields = [];
-	let message;	
-
+	let message;
 	
+	// 1. В зависимости от статуса отправки заказа меняется доступность кнопки отправки заказа
+	// а также показываются различные сообщения с ошибочными полями или статусом отправки заказа
 	// eslint-disable-next-line	
 	switch (orderSendingStatus) {
 		case "":
@@ -54,7 +54,10 @@ export const CheckAndOrder = () => {
 			break;
 	}
 
+	// Вспомогательная функция
+	// Ищет незаполненные поля и передаёт их в массив unfilled
 	function lookForUnfilled() {
+		// eslint-disable-next-line
 		switch (selectedTab.value) {
 			case "pickup":
 				checkIfError([card, phone, pickupAddress]);
@@ -70,6 +73,10 @@ export const CheckAndOrder = () => {
 		}
 	}
 
+	// Вспомогательная функция
+	// Обрабатывает массив незаполненных полей unfilled
+	// Формирует орфографически корректное сообщение для показа пользователю
+	// Перечисляет текстом, какие поля осталось заполнить
 	function processUnfilled() {
 		if (unfilled.length === 0) {
 			message = null;
@@ -126,6 +133,9 @@ export const CheckAndOrder = () => {
 		}
 	}
 
+	// * Срабатывает при нажатии кнопки "Заказать"
+	// Формирует объект с данными для последующей отправки
+	// и отправляет его
 	function createOrder(e) {
 		e.preventDefault();
 		let fieldset;
@@ -134,7 +144,7 @@ export const CheckAndOrder = () => {
 		switch (selectedTab.value) {
 			case "pickup":
 				fieldset = [selectedTab, city, pickupAddress, paymentType, card, phone];				
-				if (paymentType.value == "cash") fieldset.splice(4, 1);
+				if (paymentType.value === "cash") fieldset.splice(4, 1);
 				break;
 			case "delivery":
 				fieldset = [
@@ -147,7 +157,7 @@ export const CheckAndOrder = () => {
 					card,
 					phone,
 				];
-				if (paymentType.value == "cash") fieldset.splice(5, 1);
+				if (paymentType.value === "cash") fieldset.splice(5, 1);
 				break;
 		}
 		// Пакует данные в объект для последующей отправки

@@ -1,4 +1,5 @@
 import React from "react";
+import './HintModule.css'
 
 export class Hint extends React.Component {
 	constructor(props) {

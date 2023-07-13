@@ -8,6 +8,7 @@ export const DelAddress = () => {
 	const dAddressError = useSelector((state) => state.DP_Reducer.deliveryAddress.error);
 	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
+	// 1. Подсветка ошибки \ успеха при заполнении поля
 	let addressClasses = "input-wrapper input-wrapper--input";
 	if (orderSendingStatus !== 'success') {
 		if (dAddressError) {
@@ -17,6 +18,7 @@ export const DelAddress = () => {
 		}
 	}
 	
+	// * Срабатывает при изменении текста в инпуте
 	// Отправка изменений в стейт
 	function changeDeliveryAddress(e) {
 		dispatch(setDelAddress({value: e.target.value}))

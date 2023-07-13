@@ -1,5 +1,4 @@
-import { db as localTestCitiesData } from "../../db";
-import { useSelector } from "react-redux";
+// import { db as localTestCitiesData } from "../../db";
 
 export class DP_Services {
 	
@@ -8,6 +7,7 @@ export class DP_Services {
 		if (!response.ok) {
 			throw new Error(`Network or server error, try again later`);
 		}
+		// тестовая локальная база данных, чтобы не кошмарить сервер при разработке
 		// const response = localTestCitiesData;
 		return await response.json();
 	};
@@ -26,11 +26,9 @@ export class DP_Services {
 		if (!response.ok) {
 			throw new Error(`Network or server error, try again later`);
 		}
+		// Специально для демонстрации оставил этот консольлог
 		await response
 			.json()
 			.then((json) => console.log("ответ от сервера: ", json));
-
-		// .then((response) => response.json())
-		// .then((json) => console.log("ответ от сервера: ", json));
 	};
 }

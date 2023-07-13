@@ -18,13 +18,13 @@ export const Payment = ({ type }) => {
 	const f3 = useRef();
 	const f4 = useRef();
 
-	// Скрывает номер карты при нажатии кнопки "Наличные"
+	// 1. Показывает\скрывает номер карты в зависимости от состояния
 	let visibility;
 	if (paymentType === "cash") {
 		visibility = { display: "none" };		
 	}
 
-	// Управляет показом ошибки
+	// 2. Управляет показом ошибки
 	let cardNumberDivClasses = "input-wrapper input-wrapper--input-group ";
 	if(orderSendingStatus !== 'success') {
 		if (cardError) {
@@ -32,34 +32,9 @@ export const Payment = ({ type }) => {
 		} else {
 			cardNumberDivClasses += "input-wrapper--success";
 		}
-	}
+	}		
 	
-	// Меняет в стейте номер карты и состояние ошибки
-	function changeCardNumber(cardNumber) {
-		dispatch(setCard({value: cardNumber}));
-		if (validation(cardNumber)) {
-			// console.log('Валидация успешна');
-			dispatch(setCard({error: false}))
-		}
-		else {
-			// console.log('Валидация не прошла');
-			dispatch(setCard({error: true}))
-		}
-	}
-	
-	// Запускает валидацию номера карты
-	function validation(cardNumber) {
-		if (cardNumber.length === 16) {
-			if (!luhnAlgorythm(cardNumber)) {
-				return false
-			}
-			if (luhnAlgorythm(cardNumber)) {
-				return true
-			}			
-		} 
-		else return false
-	}
-	
+	// * Срабатывает при нажатии на "Карта" или "Наличные"
 	// Меняет тип оплаты, "Карта" или "Наличные"
 	function changePaymentType(e) {
 		dispatch(setPaymentType({value: e.target.value}));
@@ -71,6 +46,7 @@ export const Payment = ({ type }) => {
 		}
 	}
 	
+	// * Срабатывает при заполнении номера карты
 	// При заполнении текущего поля номера карты ставит фокус на следующее
 	function moveForward(e) {
 		changeCardNumber(getCardNumber());
@@ -86,8 +62,8 @@ export const Payment = ({ type }) => {
 		}
 	}
 
-	// При стирании символов в текущем поле номера карты клавишей Backspace
-	// ставит фокус на предыдущее поле
+	// * Срабатывает при нажатии клавиши Backspace
+	// При стирании символов в текущем поле номера карты ставит фокус на предыдущее поле
 	function moveBackOnBackspace(e) {
 		if (e.code === "Backspace") {
 			changeCardNumber(getCardNumber());
@@ -104,6 +80,33 @@ export const Payment = ({ type }) => {
 		}
 	}
 
+	// Вспомгательная функция
+	// Меняет в стейте номер карты и состояние ошибки
+	function changeCardNumber(cardNumber) {
+		dispatch(setCard({value: cardNumber}));
+		if (validation(cardNumber)) {
+			dispatch(setCard({error: false}))
+		}
+		else {
+			dispatch(setCard({error: true}))
+		}
+	}
+		
+	// Вспомогательная функция
+	// Запускает валидацию номера карты
+	function validation(cardNumber) {
+		if (cardNumber.length === 16) {
+			if (!luhnAlgorythm(cardNumber)) {
+				return false
+			}
+			if (luhnAlgorythm(cardNumber)) {
+				return true
+			}			
+		} 
+		else return false
+	}
+
+	// Вспомогательная функция
 	// Собирает единый номер карты из четырёх полей
 	function getCardNumber() {
 		return String(
@@ -111,6 +114,7 @@ export const Payment = ({ type }) => {
 		);
 	}
 	
+	// Вспомогательная функция
 	// Берёт единый номер карты из стейта и вставляет его в четыре поля номера карты
 	function pasteCardNumber(field) {
 		// eslint-disable-next-line
@@ -125,7 +129,9 @@ export const Payment = ({ type }) => {
 				return stateCardNumber.slice(12, 16);				
 		}
 	}
-	// Вспомогат. ф-я по выбору конкретного поля (рефа)
+
+	// Вспомогательная функция
+	// Выбор конкретного поля (рефа)
 	function selectField(field) {
 		// eslint-disable-next-line
 		switch (field) {

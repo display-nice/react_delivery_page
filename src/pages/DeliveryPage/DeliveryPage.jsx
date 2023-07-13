@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-// import { Hint } from './modules/Hint/HintModule';
-import Spinner from "@components/Spinner/Spinner.jsx";
 import { useDispatch, useSelector } from "react-redux";
 
 import { initializePage } from "@deliveryPage/DeliveryPageReducer.js";
 
 import { Hint } from "@deliveryPage/modules/Hint/HintModule.jsx";
+import { Spinner } from "@deliveryPage/modules/Spinner/Spinner.jsx";
 import { SwitchTabs } from "./modules/SwitchTabs/SwitchTabs";
 import { Payment } from "@deliveryPage/modules/Payment/Payment";
 import { Phone } from "@deliveryPage/modules/Phone";
@@ -17,8 +16,7 @@ import { Cities } from "./modules/Cities";
 import { PickupAddress } from "./modules/PickupAddress";
 import { DelAddress } from "./modules/DelAddress";
 
-const PageContent = () => {
-	const dispatch = useDispatch();
+const PageContent = () => {	
 	const selectedTab = useSelector(
 		(state) => state.ST_Reducer.selectedTab.value
 	);
@@ -32,6 +30,7 @@ const PageContent = () => {
 	// Видимость вкладок Самовывоз\Доставка
 	let pickupSectionClasses,
 		deliverySectionClasses = "form tabs-block__pick-up";
+	// eslint-disable-next-line
 	switch (selectedTab) {
 		case "pickup":
 			deliverySectionClasses += " visually-hidden";
@@ -42,8 +41,7 @@ const PageContent = () => {
 	}
 
 	return (
-		<>
-			{/* <Hint /> */}
+		<>			
 			<h1 className="visually-hidden">Заказ доставки в интернет-магазине</h1>
 			<div className="tabs-block">
 				<SwitchTabs />
@@ -85,11 +83,15 @@ const PageContent = () => {
 export const DeliveryPage = () => {
 	const page = useSelector((state) => state.DP_Reducer.page);
 	const dispatch = useDispatch();
+
 	// 1. Инициализация всей страницы
-	// Получение данных по городам с сервера
+	// Получение с сервера данных по городам
 	useEffect(() => {
 		dispatch(initializePage());
-	}, [dispatch]);	
+	}, [dispatch]);
+
+	// 2. Контент динамический и зависит от состояния: идёт ли инициализация, есть ли ошибка.
+	// Если всё ок - можно показать основной контент
 	let content;
 	if (page.isLoading) content = <Spinner />;
 	if (page.error)

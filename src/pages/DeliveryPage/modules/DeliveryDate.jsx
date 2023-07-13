@@ -8,7 +8,7 @@ export const DeliveryDate = () => {
 	const deliveryDateError = useSelector((state) => state.DP_Reducer.deliveryDate.error);
 	const orderSendingStatus = useSelector((state) => state.DP_Reducer.orderSendingStatus);
 
-	// Управляет показом ошибки
+	// 1. Подсветка ошибки \ успеха при заполнении поля
 	let dateClasses = 'input-wrapper input-wrapper--input';
 	if(orderSendingStatus !== 'success') {
 		if (deliveryDateError) {
@@ -18,7 +18,8 @@ export const DeliveryDate = () => {
 		}
 	}
 
-	// Меняет в стейте дату и состояние ошибки
+	// * Срабатывает первой при изменении даты в инпуте
+	// Меняет в стейте дату и состояние ошибки, после чего отработает п.1
 	function changeDate(e) {
 		dispatch(setDeliveryDate({value: e.target.value}));
 		if(validateDate(e.target.value)) {			
@@ -29,6 +30,7 @@ export const DeliveryDate = () => {
 		}
 	}
 
+	// * Срабатывает второй при изменении даты в инпуте
 	// Запускает валидацию даты
 	function validateDate(date) {
 		// проверка на корректность формата даты
@@ -63,6 +65,7 @@ export const DeliveryDate = () => {
 		}
 	}
 
+	// * Срабатывает третьей при изменении даты в инпуте
 	// дополнительная проверка на бизнес-условия
 	// Дата должна лежать в диапазоне от +1 до +7 дней от сегодня.
 	function checkBusinessCond(yyyymmdd) {

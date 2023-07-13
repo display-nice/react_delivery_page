@@ -1,7 +1,7 @@
-import React from "react";
 import "./Spinner.css";
 
-const Spinner = () => {
+// Спиннер простой. Вся магия делается через CSS
+export const Spinner = () => {
 	return (
 		<div className="loadingio-spinner">
 			<div className="ldio">
@@ -10,4 +10,3 @@ const Spinner = () => {
 		</div>
 	);
 };
-export default Spinner;

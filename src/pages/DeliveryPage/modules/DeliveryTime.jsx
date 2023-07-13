@@ -14,12 +14,14 @@ export const DeliveryTime = () => {
 	// в часе три шага, в диапазоне времени доставки семь часов. 3*7=21.
 	let step = 0;
 
-	// Однократно навешиваем ф-ю движения ползунка с клавиатуры
+	// * Срабатывает однократно при монтировании компонента
+	// навешивает ф-ю движения ползунка с клавиатуры
 	useEffect(() => {
 		document.addEventListener("keydown", keyboardMoveThumb);
-	}, []);	
+	});
 
-	// Функция движения ползунка по зажатию левой кнопки мыши
+	// * Срабатывает при перетаскивании ползунка влево\вправо зажатой ЛКМ
+	// двигает ползунок на шаг вперёд\назад
 	function mouseMoveThumb(e) {
 		thumb.current.ondragstart = function () {
 			return false;
@@ -32,17 +34,14 @@ export const DeliveryTime = () => {
 		document.onmousemove = function (e) {
 			// формула считает новое левое положение бегунка
 			const newLeft = e.pageX - leftEdge - shiftX;
-
 			// если новое положение бегунка преодолело барьер шага,
 			// значит номер шага надо изменить на новый
 			if (Math.floor(newLeft / stepPx) !== step) {
 				// определяем номер шага от 1 до 21
 				step = Math.floor(newLeft / stepPx);
-
 				// Если номер шага в диапазоне от 0 до 21, то делаем всё, что надо
 				if (step >= 0 && step <= 21) {
 					makeThumbActions();
-
 					// При поднятии кнопки мыши убираем обработчики
 					document.onmouseup = function () {
 						document.onmousemove = null;
@@ -59,16 +58,17 @@ export const DeliveryTime = () => {
 		};
 	}
 
-	// Функция движения ползунка по нажатию стрелок вправо\влево
+	// * Срабатывает по нажатию стрелок вправо\влево
+	// двигает ползунок на шаг вперёд\назад
 	function keyboardMoveThumb(e) {
-		if (e.shiftKey && e.code == "ArrowRight") {
+		if (e.shiftKey && e.code === "ArrowRight") {
 			step += 1;
 			if (step > 21) {
 				step = 21;
 			}
 			makeThumbActions();
 		}
-		if (e.shiftKey && e.code == "ArrowLeft") {
+		if (e.shiftKey && e.code === "ArrowLeft") {
 			step -= 1;
 			if (step < 0) {
 				step = 0;

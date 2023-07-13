@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import "./leaflet.css";
+
 import {
 	MapContainer,
 	TileLayer,
@@ -8,7 +10,7 @@ import {
 	Marker,
 	Tooltip,
 } from "react-leaflet";
-// import { GetDeliveryPoints } from "@deliveryPage/DeliveryPageServices.js";
+
 import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
 // Размеры зума, вспомогательные константы
@@ -101,7 +103,7 @@ function MyMapComponent() {
 		<>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-				// В урле можно подставить любую другую карту
+				// В урле можно подставить любую другую карту, гугл или яндекс например
 				url="http://tile2.maps.2gis.com/tiles?x={x}&y={y}&z={z}"
 			/>
 			{createMarkers()}

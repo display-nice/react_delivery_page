@@ -8,6 +8,12 @@ export const SwitchTabs = () => {
 	const dispatch = useDispatch();
 	const selectedTab = useSelector((state) => state.ST_Reducer.selectedTab.value);
 	
+	// 1. Добавляет переключение активной вкладки при нажатии кнопки Tab
+	useEffect(() => {
+		document.addEventListener('keydown', switchTabsOnTab)
+	})
+
+	// 2. Подсвечивает синим активную вкладку "Самовывоз"\"Доставка"
 	let pickupTabClasses = "tab", deliveryTabClasses = "tab";
 	switch(selectedTab) {
 		case 'pickup':
@@ -20,9 +26,8 @@ export const SwitchTabs = () => {
 			pickupTabClasses += ' active'
 	}
 
-	useEffect(() => {
-		document.addEventListener('keydown', switchTabsOnTab)
-	})
+	// * Срабатывает при нажатии кнопки Tab, работает по useEffect
+	// Переключет активную вкладку "Самовывоз"\"Доставка"
 	const switchTabsOnTab = (e) => {
 		if (e.key === "Tab") {
 			e.preventDefault();

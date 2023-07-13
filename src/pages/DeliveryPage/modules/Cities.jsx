@@ -1,18 +1,16 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCity } from "@deliveryPage/DeliveryPageReducer.js";
+import { setPickupAddress } from "@deliveryPage/DeliveryPageReducer.js";
 
 export const Cities = ({type}) => {	
 	const dispatch = useDispatch();
 	const globalCitiesData = useSelector((state) => state.DP_Reducer.citiesData);
 	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
 
-	function changeActiveCity(e) {
-		dispatch(setCity({value: e.target.value}))
-	}
-	
-	const citiesBtns = globalCitiesData.cities.map((item) => {
-		
+	// 1. Генерирует кнопки с названиями городов
+	// Кнопки затем выводятся на страницу
+	const citiesBtns = globalCitiesData.cities.map((item) => {		
 		let cityID = item['city-id'];
 		let cityName = item['city'];		
 		return (
@@ -30,6 +28,12 @@ export const Cities = ({type}) => {
 			</React.Fragment>
 		)
 	});
+
+	// * Срабатывает при нажатии на кнопку с названием города
+	function changeActiveCity(e) {
+		dispatch(setCity({value: e.target.value}));
+		dispatch(setPickupAddress({value: null, error: true}));
+	}
 
 	return (
 		<div

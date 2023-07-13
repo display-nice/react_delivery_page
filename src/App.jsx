@@ -1,5 +1,5 @@
 import React from "react";
-import { DeliveryPage } from "./pages/DeliveryPage/DeliveryPage.jsx";
+import { DeliveryPage } from "./pages/DeliveryPage/index.js";
 
 import "@css/style.css";
 import "@css/App.css";

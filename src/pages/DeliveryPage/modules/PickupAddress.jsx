@@ -8,13 +8,14 @@ export const PickupAddress = () => {
 	const activeCity = useSelector((state) => state.DP_Reducer.city.value);
 	const activeAddress = useSelector((state) => state.DP_Reducer.pickupAddress.value);
 	
-	// Меняет активный адрес по клику на кнопку адреса
+	// * Срабатывает по клику на кнопку адреса
+	// Меняет активный адрес в стейте
 	function changeActiveAddress(e) {
 		dispatch(setPickupAddress({value: e.target.value, error: false}))
 	}
 	
+	// * Срабатывает при изменении активного города в стейте
 	// Рисует кнопки адресов доставки для каждого города
-	// Срабатывает при изменении активного города в стейте
 	function createPickupAddresses(cityName) {
 		const cityID = globalCitiesData.cities.find(
 			(item) => item["city"] === cityName

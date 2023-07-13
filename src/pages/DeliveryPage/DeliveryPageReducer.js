@@ -7,20 +7,21 @@ import {
 import { DP_Services } from "@deliveryPage/DeliveryPageServices.js";
 import { ST_Reducer } from "@deliveryPage/modules/SwitchTabs/ST_Reducer";
 
-// Инициализация страницы: подгрузка данных о городах и точках доставки
-// установка их в стейт через extraReducers
-// Вызывается в компоненте DeliveryPage.jsx
+// Инициализация страницы: подгрузка данных о городах и точках доставки,
+// установка их в стейт через extraReducers. Вызывается в компоненте DeliveryPage.jsx
+// Использует асинх. запрос к серверу, вынесенный в отдельный файл DeliveryPageServices.js
 export const initializePage = createAsyncThunk(
 	"DeliveryPageReducer/initializePage",
 	async function () {
 		const DPServices = new DP_Services();
-		let citiesData = await DPServices.loadCitiesData(); // получает данные с сервера
+		let citiesData = await DPServices.loadCitiesData();
 		return citiesData;
 	}
 );
 
-// Отправка итоговых данных формы на сервер
-// Вызывается в компоненте CheckAndOrder.jsx
+// Отправка итоговых данных формы на сервер. 
+// Вызывается в компоненте CheckAndOrder.jsx, оттуда же получает данные для отправки
+// Использует асинх. запрос к серверу, вынесенный в отдельный файл DeliveryPageServices.js
 export const sendData = createAsyncThunk(
 	"DeliveryPageReducer/sendFormData",
 	async function(data) {
@@ -29,6 +30,7 @@ export const sendData = createAsyncThunk(
 	}
 )
 
+// Слайс с редьюсером, стейтом, экстра редьюсерами.
 const DP_Slice = createSlice({
 	name: "DeliveryPageReducer",
 	initialState: {
@@ -168,7 +170,6 @@ const DP_Slice = createSlice({
 	extraReducers: {		
 		[initializePage.error]: (state) => {
 			state.page.error = true;
-			console.log('initializePage.error');
 		},
 		[initializePage.fulfilled]: (state, action) => {
 			state.citiesData = action.payload;
@@ -227,7 +228,9 @@ const DP_Slice = createSlice({
 	},
 });
 
+// Экспорт редьюсера из слайса.
 export const DP_Reducer = DP_Slice.reducer;
+// Экспорт экшенов из слайса.
 export const {	
 	setPage,
 	setOrderSendingStatus,
@@ -241,6 +244,7 @@ export const {
 	setDeliveryTime,
 } = DP_Slice.actions;
 
+// Создание и экспорт единого главного редьюсера из нескольких обычных редьюсеров.
 export const DeliveryPageReducer = combineReducers({
 	DP_Reducer,
 	ST_Reducer,
