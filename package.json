@@ -2,6 +2,7 @@
   "name": "react_delivery_page",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://wakadaka59.github.io/react_delivery_page",
   "dependencies": {
     "@2gis/mapgl": "^1.35.1",
     "@reduxjs/toolkit": "^1.9.3",
@@ -9,6 +10,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "2gis-maps": "^3.7.3",
+    "gh-pages": "^5.0.0",
     "leaflet": "^1.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,7 +23,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "react-app-rewired build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
