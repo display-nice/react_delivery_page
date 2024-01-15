@@ -2,7 +2,7 @@
   "name": "react_delivery_page",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://wakadaka59.github.io/react_delivery_page",
+  "homepage": "https://display-nice.github.io/react_delivery_page",
   "dependencies": {
     "@2gis/mapgl": "^1.35.1",
     "@reduxjs/toolkit": "^1.9.3",

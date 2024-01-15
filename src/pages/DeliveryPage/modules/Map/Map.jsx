@@ -78,6 +78,7 @@ function MyMapComponent() {
 	}, [activeCity]);
 
 	function moveToActiveCity() {
+		console.log(deliveryPoints);
 		let center = findCenter(deliveryPoints);
 		map.panTo(center, zoomToCity);
 		map.setZoomAround(center, zoomToCity)
