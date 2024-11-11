@@ -39,7 +39,7 @@ export const CheckAndOrder = () => {
 			break;
 		case "success":
 			orderBtnDisabled = true;
-			message = <div>Заказ отправлен! Ожидайте звонка оператора.</div>;
+			message = <div>Заказ отправлен! Посмотрите консоль разработчика.</div>;
 			break;
 		case "error":
 			lookForUnfilled()
