@@ -16,15 +16,18 @@ import {
 import markerIcon from './images/marker-icon.png';
 import markerIcon2x from './images/marker-icon-2x.png';
 import markerShadow from './images/marker-shadow.png';
-import layers from './images/layers.png';
-import layers2x from './images/layers-2x.png';
 import L from 'leaflet';
 let DefaultIcon = L.icon({
 	iconUrl: markerIcon,
-	markerIcon2xUrl: markerIcon2x,
-	markerShadowUrl: markerShadow,
-	layersUrl: layers,
-	layers2xUrl: layers2x
+	iconRetinaUrl: markerIcon2x,
+	shadowUrl: markerShadow,
+	iconSize: [25, 41],
+	// Точка привязки — остриё булавки (низ по центру),
+	// иначе маркер "плавает" относительно координаты при зуме.
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	tooltipAnchor: [16, -28],
+	shadowSize: [41, 41]
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 

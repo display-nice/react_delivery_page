@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
@@ -15,7 +16,7 @@
     },
     "jsx": "react-jsx",
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
   },
   "exclude": ["node_modules", "dist"]
 }
