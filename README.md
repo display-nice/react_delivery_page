@@ -1,6 +1,26 @@
 # React Delivery Page
 Страница заказа доставки для интернет-магазина; https://display-nice.github.io/react_delivery_page/
 
+## Запуск проекта
+
+```bash
+npm install
+npm run dev
+```
+
+Сборка и предпросмотр production-версии:
+
+```bash
+npm run build
+npm run preview
+```
+
+Публикация на GitHub Pages:
+
+```bash
+npm run deploy
+```
+
 Типовая логика для многих таких страниц: переключение режимов самовывоз\доставка, выбор адреса, отображение адреса на карте, выбор способа оплаты, валидация.
 
 Особенности проекта:
